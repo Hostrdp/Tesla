@@ -1,4 +1,4 @@
-#!/bin/sh.
+#!/bin/bash
 
 getDisk() {
     bootDisk=$(mount | grep -E '(/boot)' | head -1 | awk '{print $1}')
