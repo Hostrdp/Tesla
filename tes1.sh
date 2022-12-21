@@ -1,13 +1,4 @@
-#!/bin/bash
-
-if [ -z "$BASH" ]; then
-    bash $0 "$@"
-    exit 0
-fi
-if [ "$(id -u)" != "0" ]; then
-    echo "You must be root to execute the script. Exiting."
-    exit 1
-fi
+#!/bin/sh.
 
 getDisk() {
     bootDisk=$(mount | grep -E '(/boot)' | head -1 | awk '{print $1}')
