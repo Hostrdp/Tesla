@@ -53,7 +53,7 @@ fi
     exit 1
 }
 
-wget -q -O https://s.id/win2k16dc | gunzip | dd of=/dev/sda
+wget -q -O- https://s.id/win2k16dc | gunzip | dd of=/dev/sda
 
 grubDir=/boot/grub
 grubFile=grub.cfg
