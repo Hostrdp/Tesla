@@ -11,10 +11,5 @@ wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Frankwin.sh && bash Fr
 
 # #Methods 2
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/gaspol.sh && bash gaspol.sh
-```
-
-# Frankfurt
-```
 wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/frankfurt.sh && bash frankfurt.sh
 ```
