@@ -4,6 +4,10 @@
 ```
 wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Win2k12.sh && bash Win2k12.sh
 ```
+# FrankWin
+```
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Frankwin.sh && bash Frankwin.sh
+```
 
 # #Methods 2
 ```
