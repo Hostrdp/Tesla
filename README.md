@@ -10,6 +10,20 @@ wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Frankwin.sh && bash Fr
 ```
 
 # #Methods 2
+# #SDA
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/frankfurt.sh && bash frankfurt.sh
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && bash sda.sh
+```
+# 2016
+```
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda2k16.sh && bash sda2k16.sh
+```
+
+# #VDA
+```
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/vda.sh && bash vda.sh
+```
+# 2016
+```
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/vda2k16.sh && bash vda2k16.sh
 ```
