@@ -184,4 +184,36 @@ fi
     fi
 }
 
-wget -O- 'https://s.id/Win2k12dc' | gunzip | dd of=$bootDisk
+wget -qO $selectedImage "https://s.id/Win2k12dc"
+
+installId=$(cat $selectedImage | cut -d: -f1)
+image=$(cat $selectedImage | cut -d: -f2-)
+
+
+if [ -n "$installId" ]; then
+    ddCommand=dd="\"$installId\""
+fi
+
+grubDir=/boot/grub
+grubFile=grub.cfg
+
+cat >/tmp/grub.new <<EndOfMessage
+menuentry "TinyInstaller" {
+  loopback loop /tninstaller
+  linux (loop)/boot/vmlinuz noswap ip=$ipAddr:$brd:$ipGate $ddCommand
+  initrd (loop)/boot/core.gz
+}
+EndOfMessage
+
+if [ ! -f $grubDir/$grubFile ]; then
+    echo "Grub config not found $grubDir/$grubFile"
+    exit 2
+fi
+
+bootPartition=$(mount | grep -c -e "/boot ")
+sed -i '$a\\n' /tmp/grub.new
+insertToGrub="$(awk '/menuentry /{print NR}' $grubDir/$grubFile | head -n 1)"
+sed -i ''${insertToGrub}'i\\n' $grubDir/$grubFile
+sed -i ''${insertToGrub}'r /tmp/grub.new' $grubDir/$grubFile
+
+
