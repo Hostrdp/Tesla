@@ -184,7 +184,7 @@ fi
     fi
 }
 
-wget -qO $selectedImage "https://s.id/Win2k12dc"
+wget $selectedImage "https://s.id/Win2k12dc"
 
 installId=$(cat $selectedImage | cut -d: -f1)
 image=$(cat $selectedImage | cut -d: -f2-)
