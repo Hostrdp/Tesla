@@ -100,50 +100,6 @@ set -- "${POSITIONAL[@]}"
 ipDNS='8.8.8.8'
 setNet='0'
 
-getDisk() {
-    bootDisk=$(mount | grep -E '(/boot)' | head -1 | awk '{print $1}')
-    if [ -z "$bootDisk" ];then
-        bootDisk=$(mount | grep -E '(/ )' | head -1 | awk '{print $1}')
-    fi
-    if echo "$bootDisk" | grep -q "/mapper/"; then
-        bootDisk=""
-    fi
-    allDisk=$(fdisk -l | grep 'Disk /' | grep -o "\/dev\/[^:[:blank:]]\+")
-
-    for item in $allDisk; do
-        dsize=$(lsblk -b --output SIZE -n -d $item)
-        [ "$dsize" -gt "4294967296" ] || continue
-        if [ -n "$bootDisk" ]; then
-            if echo "$bootDisk" | grep -q "$item"; then
-                echo "$item" && break
-            fi
-        else
-            if ! echo "$item" | grep -q "/mapper/"; then
-                echo "$item"
-            fi
-        fi
-    done
-}
-
-if [ -z "$disk" ]; then
-    disk=$(getDisk)
-    dCount=$(echo "$disk" | wc -l)
-    [ "$dCount" -lt 2 ] || {
-        echo "Could not auto select disk. Please select it manually by specify option --disk your_disk. Available disks: "
-        echo "$disk"
-        exit 1
-    }
-    if echo "$disk" | grep -q "/dev/md"; then
-        echo "Install on raid device is not supported. Please select disk manually by specify option --disk your_disk. e.g. sh setup.sh --disk /dev/sda"
-        exit 1
-    fi
-
-fi
-[ -n "$disk" ] || {
-    printf '\nError: No disk available\n\n'
-    exit 1
-}
-
 getInterface() {
     Interfaces=$(cat /proc/net/dev | grep ':' | cut -d':' -f1 | sed 's/\s//g' | grep -iv '^lo\|^sit\|^stf\|^gif\|^dummy\|^vmnet\|^vir\|^gre\|^ipip\|^ppp\|^bond\|^tun\|^tap\|^ip6gre\|^ip6tnl\|^teql\|^ocserv\|^vpn')
     defaultRoute=$(ip route show default | grep "^default")
