@@ -184,22 +184,16 @@ fi
     fi
 }
 
-wget $selectedImage "https://s.id/Win2k12dc"
+selectedImage=$(wget -q "https://s.id/Win2k12dc")
 
-installId=$(cat $selectedImage | cut -d: -f1)
-image=$(cat $selectedImage | cut -d: -f2-)
-
-
-if [ -n "$installId" ]; then
-    ddCommand=dd="\"$installId\""
-fi
+ddCommand=dd="\"$selectedImage\""
 
 grubDir=/boot/grub
 grubFile=grub.cfg
 
 cat >/tmp/grub.new <<EndOfMessage
-menuentry "TinyInstaller" {
-  loopback loop /tninstaller
+menuentry "Hostrdp" {
+  loopback loop /hostrdp
   linux (loop)/boot/vmlinuz noswap ip=$ipAddr:$brd:$ipGate $ddCommand
   initrd (loop)/boot/core.gz
 }
