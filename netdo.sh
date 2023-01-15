@@ -184,7 +184,7 @@ fi
     fi
 }
 
-selectedImage=$(wget -q "https://s.id/Win2k12dc")
+selectedImage=$(wget -v "https://s.id/Win2k12dc")
 
 ddCommand=dd="\"$selectedImage\""
 
