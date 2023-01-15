@@ -193,7 +193,7 @@ grubFile=grub.cfg
 
 cat >/tmp/grub.new <<EndOfMessage
 menuentry "Hostrdp" {
-  loopback loop /hostrdp
+  loopback loop /$selectedImage
   linux (loop)/boot/vmlinuz noswap ip=$ipAddr:$brd:$ipGate $ddCommand
   initrd (loop)/boot/core.gz
 }
