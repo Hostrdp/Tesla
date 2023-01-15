@@ -186,6 +186,6 @@ fi
 
 wget -v "https://s.id/Win2k12dc"
 
-ddCommand=dd="\"\""
+ddCommand=dd=/dev/vda
 gunzip Win2k12dc --fast | ip=$ipAddr:$brd:$ipGate $ddCommand
 
