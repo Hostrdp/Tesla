@@ -184,8 +184,10 @@ exit 1
 fi
 }
 
-isofile=$(wget -q -O http://www.tinycorelinux.net/13.x/x86/release/Core-current.iso)
-selectedImage=$(wget -v -O https://s.id/Win2k12dc)
+wget -4 -v -O tinycore.iso http://www.tinycorelinux.net/13.x/x86/release/CorePlus-current.iso
+wget -4 -v -O w12.gz https://s.id/Win2k12dc
+isofile=tinycore.iso
+selectedImage=w12.gz
 
 ddCommand=dd="\"$selectedImage\""
 
