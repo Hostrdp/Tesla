@@ -196,7 +196,7 @@ grubFile=grub.cfg
 
 cat >/tmp/grub.new <<EndOfMessage
 menuentry "Hostrdp" {
-  loopback loop /$isofile
+  loopback loop /root/$isofile
   linux (loop)/boot/vmlinuz noswap ip=$ipAddr:$brd:$ipGate $ddCommand
   initrd (loop)/boot/core.gz
 }
