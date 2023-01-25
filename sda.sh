@@ -2,6 +2,6 @@
 
 apt-get update
 
-wget -O- --no-check-certificate 'http://15.235.203.45/Win2k12dc.gz' | gunzip | dd of=/dev/sda
+dd if=w10.gz bs=1M status=progress | gunzip -dc | dd of=/dev/sda
 echo 1 > /proc/sys/kernel/sysrq
 echo b > /proc/sysrq-trigger
