@@ -12,7 +12,7 @@ wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Frankwin.sh && bash Fr
 # #Methods 2
 # #SDA
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && bash sda.sh
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && screen -S sda && bash sda.sh
 ```
 # 2016
 ```
