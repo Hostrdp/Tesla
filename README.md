@@ -4,15 +4,11 @@
 ```
 wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Win2k12.sh && bash Win2k12.sh
 ```
-# FrankWin
-```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Frankwin.sh && bash Frankwin.sh
-```
 
 # #Methods 2
 # #SDA
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && screen -S sda && bash sda.sh
+wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && chmod +x sda.sh && screen -S sda ./sda.sh
 ```
 # 2016
 ```
