@@ -8,7 +8,7 @@ wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Win2k12.sh && bash Win
 # #Methods 2
 # #SDA
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && chmod +x sda.sh && screen -S sda ./sda.sh
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && chmod +x sda.sh && screen -S sda ./sda.sh
 ```
 # 2016
 ```
