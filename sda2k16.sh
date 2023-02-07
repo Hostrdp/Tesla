@@ -2,6 +2,8 @@
 
 apt-get update
 
-wget -O- --no-check-certificate Win2k16.gz 'https://s.id/Win2k16dc' | gunzip | dd of=/dev/sda
+wget -O w16.gz 'https://s.id/Win2k16dc'
+gunzip -dc w16.gz | dd of=/dev/sda bs=1M status=progress
+
 echo 1 > /proc/sys/kernel/sysrq
 echo b > /proc/sysrq-trigger
