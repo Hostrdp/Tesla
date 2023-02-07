@@ -12,7 +12,7 @@ apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/ma
 ```
 # 2016
 ```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda2k16.sh && bash sda2k16.sh
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda2k16.sh && chmod +x sda2k16.sh && screen -S 2k16 ./sda2k16.sh
 ```
 
 # #VDA
