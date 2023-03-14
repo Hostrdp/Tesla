@@ -1,14 +1,13 @@
 # Usage
 
-# #Install Windows Server 2012R2 Datacenter (Activated)
-```
-wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/Win2k12.sh && bash Win2k12.sh
-```
 
-# #Methods 2
-# #SDA
+# #G-Drive SDA 2012
 ```
-apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sda.sh && chmod +x sda.sh && screen -S sda ./sda.sh
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sgd12.sh && chmod +x sda.sh && screen -S sda ./sgd12.sh
+```
+# #One-Drive SDA 2012
+```
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sod12.sh && chmod +x sda.sh && screen -S sda ./sod12.sh
 ```
 # 2016
 ```
