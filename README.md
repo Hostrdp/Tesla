@@ -3,11 +3,11 @@
 
 # #G-Drive SDA 2012
 ```
-apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sgd12.sh && chmod +x sda.sh && screen -S sda ./sgd12.sh
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sgd12.sh && chmod +x sgd12.sh && screen -S sda ./sgd12.sh
 ```
 # #One-Drive SDA 2012
 ```
-apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sod12.sh && chmod +x sda.sh && screen -S sda ./sod12.sh
+apt install -y screen && wget https://raw.githubusercontent.com/Hostrdp/Tesla/main/sod12.sh && chmod +x sod12.sh && screen -S sda ./sod12.sh
 ```
 # 2016
 ```
