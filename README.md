@@ -1,5 +1,9 @@
 # Usage
 
+# #Via Kernel Installation
+```
+wget -qO kernel.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/kernel.sh && chmod +x kernel.sh && ./kernel.sh
+```
 
 # #G-Drive SDA 2012
 ```
