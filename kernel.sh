@@ -7,9 +7,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
-    yum install -y wget curl
+    yum install -y wget curl xz-utils file gawk openssl
+    yum update
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
-    apt-get install -y wget curl	
+    apt-get install -y wget curl xz-utils file gawk openssl
+    apt-get update
 fi
 
 function CopyRight() {
