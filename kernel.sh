@@ -233,7 +233,7 @@ function Start() {
     8) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
     9)
       echo -e "\n"
-      read -r -p "Custom image URL: " imgURL echo "https://s.id/
+      read -r -p "Custom image URL: " imgURL https://s.id/
       echo -e "\n"
       read -r -p "Are you sure start reinstall? [y/N]: " input
       case $input in
