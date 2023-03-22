@@ -4,6 +4,10 @@
 ```
 wget -qO kernel.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/kernel.sh && chmod +x kernel.sh && bash kernel.sh
 ```
+# If error grub.cfg!
+```
+mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg
+```
 
 # #G-Drive SDA 2012
 ```
