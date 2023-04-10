@@ -236,7 +236,7 @@ function Start() {
         *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
-    99) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' ;;
+    99) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
