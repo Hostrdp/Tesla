@@ -7,10 +7,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
-    yum install -y wget curl xz-utils file gawk openssl
+    yum install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules shiw
     yum update
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
-    apt-get install -y wget curl xz-utils file gawk openssl
+    apt-get install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules shiw
     apt-get update
 fi
 
@@ -215,10 +215,7 @@ function Start() {
   echo "  7) Ubuntu 18.04"
   echo "  8) Ubuntu 20.04"
   echo "  9) Custom image"
-  echo -e "\033[31m  Deprecated:\033[0m"
-  echo "  10) CentOS 6"
-  echo "  11) Debian 9"
-  echo "  12) Ubuntu 14.04"
+  echo "  99) Template Bintang"
   echo "  0) Exit"
   echo -ne "\nYour option: "
   read N
@@ -241,9 +238,7 @@ function Start() {
         *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
-    10) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -c 6.10 -v 64 -a $NETSTR $CMIRROR ;;
-    11) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 9 -v 64 -a $NETSTR $DMIRROR ;;
-    12) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 14.04 -v 64 -a $NETSTR $UMIRROR ;;
+    99) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
