@@ -7,11 +7,13 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
-    yum install -y wget curl xz-utils file gawk openssl
     yum makecache && yum update -y
+    yum install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules- shim && update grub2
+    
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
-    apt-get install -y curl wget xz-utils file gawk openssl
     apt-get update --fix-missing
+    apt-get install -y curl wget xz-utils file gawk openssl
+    
 fi
 
 function CopyRight() {
