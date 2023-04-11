@@ -8,7 +8,7 @@ fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum makecache && yum update -y
-    yum install -y wget curl xz file gawk openssl grub2-efi grub2-efi-modules- shim && update grub2
+    yum install -y wget curl xz file gawk openssl
     
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get update --fix-missing
@@ -23,7 +23,7 @@ function CopyRight() {
   echo "#  Auto Reinstall Script                               #"
   echo "#                                                      #"
   echo "#  Author: Adhwa Digital & hiCasper                    #"
-  echo "#  Last Modified: 2023-04-10                           #"
+  echo "#  Last Modified: 2023-04-12                           #"
   echo "#                                                      #"
   echo "#  Supported by MoeClub                                #"
   echo "#                                                      #"
@@ -215,7 +215,10 @@ function Start() {
   echo "  7) Ubuntu 18.04"
   echo "  8) Ubuntu 20.04"
   echo "  9) Custom image"
-  echo "  99) Template Bintang"
+  echo "  10)Template Bintang GZ"
+  echo "  11)Template Bintang XZ"
+  echo "  12)Template Tesla GZ"
+  echo "  13)Template Tesla XZ"
   echo "  0) Exit"
   echo -ne "\nYour option: "
   read N
@@ -238,7 +241,10 @@ function Start() {
         *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
-    99) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
+    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintangxz' --filetype xz $DMIRROR ;;
+    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' --filetype xz $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
