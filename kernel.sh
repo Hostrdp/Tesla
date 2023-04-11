@@ -8,10 +8,11 @@ fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum install -y wget curl xz-utils file gawk openssl
-    yum update
+    yum makecache && yum update -y
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get install -y curl wget xz-utils file gawk openssl
-    apt-get update
+    apt dist-upgrade -y
+    apt-get update --fix-missing
 fi
 
 function CopyRight() {
