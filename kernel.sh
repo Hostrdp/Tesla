@@ -10,7 +10,7 @@ if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules shiw
     yum update
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
-    apt-get install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules shiw
+    apt install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules shiw
     apt-get update
 fi
 
