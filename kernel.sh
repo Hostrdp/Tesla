@@ -8,7 +8,7 @@ fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum makecache && yum update -y
-    yum install -y wget curl xz-utils file gawk openssl grub2-efi grub2-efi-modules- shim && update grub2
+    yum install -y wget curl xz file gawk openssl grub2-efi grub2-efi-modules- shim && update grub2
     
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get update --fix-missing
