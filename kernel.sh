@@ -11,7 +11,6 @@ if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum makecache && yum update -y
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get install -y curl wget xz-utils file gawk openssl
-    apt dist-upgrade -y
     apt-get update --fix-missing
 fi
 
