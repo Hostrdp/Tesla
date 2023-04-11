@@ -10,7 +10,7 @@ if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum install -y wget curl xz-utils file gawk openssl
     yum update
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
-    apt install -y wget curl xz-utils file gawk openssl
+    apt-get install -y curl wget xz-utils file gawk openssl
     apt-get update
 fi
 
