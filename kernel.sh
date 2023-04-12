@@ -242,9 +242,9 @@ function Start() {
       esac
       ;;
     10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintangxz' --filetype xz $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintangxz' -filetype xz $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
-    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' --filetype xz $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
