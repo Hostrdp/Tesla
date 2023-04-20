@@ -1,5 +1,10 @@
 # Usage
 
+# #1 Command
+```
+wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh && chmod +x /tmp/InstallNET.sh && bash /tmp/InstallNET.sh -dd 'https://s.id/bintang12'
+```
+
 # #Via Kernel Installation
 ```
 wget --no-check-certificate -qO kernel.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/kernel.sh && chmod +x kernel.sh && bash kernel.sh
