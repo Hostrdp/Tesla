@@ -312,8 +312,7 @@ function selectMirror(){
   [ -n "$Relese" ] && [ -n "$DIST" ] && [ -n "$VER" ] || exit 1
   if [ "$Relese" == "debian" ] || [ "$Relese" == "ubuntu" ]; then
     [ "$DIST" == "focal" ] && legacy="legacy-" || legacy=""
-    TEMP="http://mirrors.cloud.tencent.com/debian"
-    #TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/${legacy}images/netboot/${Relese}-installer/${VER}/initrd.gz"
+    TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/${legacy}images/netboot/${Relese}-installer/${VER}/initrd.gz"
   elif [ "$Relese" == "centos" ] || [ "$Relese" == "rockylinux" ] || [ "$Relese" == "almalinux" ]; then
     if [ "$Relese" == "centos" ] && [[ "$RedHatSeries" -le "7" ]]; then
       TEMP="SUB_MIRROR/${DIST}/os/${VER}/images/pxeboot/initrd.img"
