@@ -8,7 +8,7 @@ fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum makecache && yum update -y
-    yum install -y wget curl xz file gawk openssl
+    yum install -y wget curl xz file gawk openssl efiboot efiboot-modules efibootmgr
     
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get update --fix-missing
