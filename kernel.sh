@@ -218,6 +218,7 @@ function Start() {
   echo "  10)Template Bintang GZ"
   echo "  11)Template Tesla GZ"
   echo "  12)Template Tesla XZ"
+  echo "  13)Template Akuma
   echo "  0) Exit"
   echo -ne "\nYour option: "
   read N
@@ -243,6 +244,7 @@ function Start() {
     10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
