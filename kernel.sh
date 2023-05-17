@@ -218,8 +218,8 @@ function Start() {
   echo "  10)Template Bintang GZ"
   echo "  11)Template Tesla GZ"
   echo "  12)Template Tesla XZ"
-  echo "  13)Template Akuma
-  echo "  0) Exit"
+  echo "  13)Template Akuma"
+  echo "  0)Exit"
   echo -ne "\nYour option: "
   read N
   case $N in
