@@ -190,8 +190,8 @@ function Start() {
     rm -f /tmp/InstallNET.sh
   fi
   #curl -sSL -o /tmp/InstallNET.sh 'https://fastly.jsdelivr.net/gh/hiCasper/Shell@latest/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/fcurrk/reinstall/master/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/fcurrk/reinstall/master/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
 
   CMIRROR=''
   CVMIRROR=''
@@ -220,6 +220,7 @@ function Start() {
   echo "  11)Template Tesla GZ"
   echo "  12)Template Tesla XZ"
   echo "  13)Template Akuma"
+  echo "  14)Template Akuma 100"
   echo "  0)Exit"
   echo -ne "\nYour option: "
   read N
@@ -246,6 +247,7 @@ function Start() {
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
     13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
+    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/windows.img' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
