@@ -8,11 +8,11 @@ fi
 
 if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
     yum makecache && yum update -y
-    yum install -y wget curl
+    yum install -y wget curl file gawk openssl xz-utils efibootmgr
     
 elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
     apt-get update --fix-missing
-    apt install -y curl wget
+    apt install -y curl wget file gawk openssl xz-utils efibootmgr
     
 fi
 
@@ -190,7 +190,8 @@ function Start() {
     rm -f /tmp/InstallNET.sh
   fi
   #curl -sSL -o /tmp/InstallNET.sh 'https://fastly.jsdelivr.net/gh/hiCasper/Shell@latest/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  curl -sSL -o /tmp/InstallNET.sh '
 
   CMIRROR=''
   CVMIRROR=''
