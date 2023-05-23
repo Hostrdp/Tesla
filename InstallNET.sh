@@ -351,42 +351,32 @@ function dependence() {
   fi
 }
 
-function selectMirror() {
+function selectMirror(){
   [ $# -ge 3 ] || exit 1
   Relese=$(echo "$1" |sed -r 's/(.*)/\L\1/')
   DIST=$(echo "$2" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
   VER=$(echo "$3" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
   New=$(echo "$4" |sed 's/\ //g')
   [ -n "$Relese" ] && [ -n "$DIST" ] && [ -n "$VER" ] || exit 1
-  if [ "$Relese" == "debian" ] || [ "$Relese" == "ubuntu" ] || [ "$Relese" == "kali" ]; then
+  if [ "$Relese" == "debian" ] || [ "$Relese" == "ubuntu" ]; then
     [ "$DIST" == "focal" ] && legacy="legacy-" || legacy=""
     TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/${legacy}images/netboot/${Relese}-installer/${VER}/initrd.gz"
-    [[ "$Relese" == "kali" ]] && TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/images/netboot/debian-installer/${VER}/initrd.gz"
-  elif [ "$Relese" == "centos" ] || [ "$Relese" == "rockylinux" ] || [ "$Relese" == "almalinux" ]; then
-    if [ "$Relese" == "centos" ] && [[ "$RedHatSeries" -le "7" ]]; then
-      TEMP="SUB_MIRROR/${DIST}/os/${VER}/images/pxeboot/initrd.img"
-    else
-      TEMP="SUB_MIRROR/${DIST}/BaseOS/${VER}/os/images/pxeboot/initrd.img"
-    fi
-  elif [ "$Relese" == "fedora" ]; then
-    TEMP="SUB_MIRROR/releases/${DIST}/Server/${VER}/os/images/pxeboot/initrd.img"
+  elif [ "$Relese" == "centos" ]; then
+    TEMP="SUB_MIRROR/${DIST}/os/${VER}/isolinux/initrd.img"
   fi
   [ -n "$TEMP" ] || exit 1
   mirrorStatus=0
   declare -A MirrorBackup
-  if [[ "$IsCN" == "cn" ]]; then
-    MirrorBackup=(["debian0"]="" ["debian1"]="http://mirror.nju.edu.cn/debian" ["debian2"]="http://mirrors.hit.edu.cn/debian" ["debian3"]="https://mirrors.aliyun.com/debian-archive/debian" ["ubuntu0"]="" ["ubuntu1"]="https://mirrors.ustc.edu.cn/ubuntu" ["ubuntu2"]="http://mirrors.xjtu.edu.cn/ubuntu" ["kali0"]="" ["kali1"]="https://mirrors.tuna.tsinghua.edu.cn/kali" ["kali2"]="http://mirrors.zju.edu.cn/kali" ["centos0"]="" ["centos1"]="https://mirrors.ustc.edu.cn/centos-stream" ["centos2"]="https://mirrors.tuna.tsinghua.edu.cn/centos" ["centos3"]="http://mirror.nju.edu.cn/centos-altarch" ["centos4"]="https://mirrors.tuna.tsinghua.edu.cn/centos-vault" ["fedora0"]="" ["fedora1"]="https://mirrors.bfsu.edu.cn/fedora" ["fedora2"]="https://mirrors.tuna.tsinghua.edu.cn/fedora" ["rockylinux0"]="" ["rockylinux1"]="http://mirror.nju.edu.cn/rocky" ["rockylinux2"]="http://mirrors.sdu.edu.cn/rocky" ["almalinux0"]="" ["almalinux1"]="https://mirror.sjtu.edu.cn/almalinux" ["almalinux2"]="http://mirrors.neusoft.edu.cn/almalinux")
-  else
-    MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/debian" ["debian3"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="https://mirrors.ocf.berkeley.edu/kali" ["kali2"]="http://ftp.jaist.ac.jp/pub/Linux/kali" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://mirror.stream.centos.org" ["centos3"]="http://mirror.centos.org/altarch" ["centos4"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="https://download-ib01.fedoraproject.org/pub/fedora/linux" ["fedora2"]="https://download-cc-rdu01.fedoraproject.org/pub/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://ftp.udx.icscoe.jp/Linux/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
-  fi
-  echo "$New" | grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="${New%*/}"
-  for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese"); do
-    Current="${MirrorBackup[$mirror]}"
-    [ -n "$Current" ] || continue
-    MirrorURL=`echo "$TEMP" |sed "s#SUB_MIRROR#${Current}#g"`
-    wget --no-check-certificate --spider --timeout=3 -o /dev/null "$MirrorURL"
-    [ $? -eq 0 ] && mirrorStatus=1 && break
-  done
+  MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://vault.centos.org")
+  echo "$New" |grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="$New"
+  for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese")
+    do
+      Current="${MirrorBackup[$mirror]}"
+      [ -n "$Current" ] || continue
+      MirrorURL=`echo "$TEMP" |sed "s#SUB_MIRROR#${Current}#g"`
+      wget --no-check-certificate --spider --timeout=3 -o /dev/null "$MirrorURL"
+      [ $? -eq 0 ] && mirrorStatus=1 && break
+    done
   [ $mirrorStatus -eq 1 ] && echo "$Current" || exit 1
 }
 
