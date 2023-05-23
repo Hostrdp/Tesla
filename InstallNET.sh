@@ -15,10 +15,12 @@
 ## Blog: https://www.zhihu.com/column/originaltechnic
 
 # color
-blue='\033[0;34m'
-yellow='\033[0;33m'
-green='\033[0;32m'
-red='\033[0;31m'
+underLine='\033[4m'
+aoiBlue='\033[36m'
+blue='\033[34m'
+yellow='\033[33m'
+green='\033[32m'
+red='\033[31m'
 plain='\033[0m'
 
 export tmpVER=''
@@ -31,7 +33,7 @@ export TimeZone=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='1.1.1.1 8.8.8.8'
+export ipDNS='1.0.0.1 8.8.4.4'
 export ip6Addr=''
 export ip6Mask=''
 export ip6Gate=''
@@ -256,14 +258,14 @@ while [[ $# -ge 1 ]]; do
       ;;
     *)
       if [[ "$1" != 'error' ]]; then echo -ne "\nInvaild option: '$1'\n\n"; fi
-      echo -ne " Usage:\n\tbash $(basename $0)\t\t\t-debian       [\033[33m\033[04mdists-name\033[0m]\n\t\t\t\t-ubuntu       [\033[04mdists-name\033[0m]\n\t\t\t\t-kali         [\033[04mdists-name\033[0m]\n\t\t\t\t-centos       [\033[04mdists-name\033[0m]\n\t\t\t\t-rockylinux   [\033[04mdists-name\033[0m]\n\t\t\t\t-almalinux    [\033[04mdists-name\033[0m]\n\t\t\t\t-fedora       [\033[04mdists-name\033[0m]\n\t\t\t\t-v/--ver      [32/i386|64/\033[33m\033[04mamd64\033[0m|arm/\033[33m\033[04marm64\033[0m] [\033[33m\033[04mdists-verison\033[0m]\n\t\t\t\t--ip-addr/--ip-gate/--ip-mask\n\t\t\t\t-apt/-yum/-mirror\n\t\t\t\t-dd/--image\n\t\t\t\t-pwd          [linux password]\n\t\t\t\t-port         [linux ssh port]\n"
+      echo -ne " Usage:\n\tbash $(basename $0)\t-debian       [${underLine}${yellow}dists-name${plain}]\n\t\t\t\t-ubuntu       [${underLine}dists-name${plain}]\n\t\t\t\t-kali         [${underLine}dists-name${plain}]\n\t\t\t\t-centos       [${underLine}dists-name${plain}]\n\t\t\t\t-rockylinux   [${underLine}dists-name${plain}]\n\t\t\t\t-almalinux    [${underLine}dists-name${plain}]\n\t\t\t\t-fedora       [${underLine}dists-name${plain}]\n\t\t\t\t-version      [32/i386|64/${underLine}${yellow}amd64${plain}|arm/${underLine}${yellow}arm64${plain}] [${underLine}${yellow}dists-verison${plain}]\n\t\t\t\t--ip-addr/--ip-gate/--ip-mask\n\t\t\t\t-apt/-yum/-mirror\n\t\t\t\t-dd/--image\n\t\t\t\t-pwd          [linux password]\n\t\t\t\t-port         [linux ssh port]\n"
       exit 1
       ;;
     esac
   done
 
 # Check Root
-[[ "$EUID" -ne '0' || $(id -u) != '0' ]] && echo -ne "\n[${red}Error${plain}] This script must be executed as root!\n\nTry to type:\n${yellow}sudo -s\n${plain}\nAfter entering the password, switch to root dir to execute this script:\n${yellow}cd ~${plain}\n\n" && exit 1
+[[ "$EUID" -ne '0' || $(id -u) != '0' ]] && echo -ne "\n[${red}Error!${plain}] This script must be executed as root!\n\nTry to type:\n${yellow}sudo -s\n${plain}\nAfter entering the password, switch to root dir to execute this script:\n${yellow}cd ~${plain}\n\n" && exit 1
 
 # Ping delay to YouTube($1) and Instagram($2) and Twitter($3), support both ipv4 and ipv6, $4 is $IPStackType
 function checkCN() {
@@ -335,16 +337,16 @@ function dependence() {
             fi
           done
         if [ "$Found" == '1' ]; then
-          echo -en "[\033[32mok\033[0m]\t";
+          echo -en "[${green}ok${plain}]\t";
         else
           Full='1';
-          echo -en "[\033[31mNot Install\033[0m]";
+          echo -en "[${red}Not Install${plain}]";
         fi
         echo -en "\t$BIN_DEP\n";
       fi
     done
   if [ "$Full" == '1' ]; then
-    echo -ne "\n\033[31mError! \033[0mPlease use '\033[33mapt-get\033[0m' or '\033[33myum / dnf\033[0m' install it.\n\n\n"
+    echo -ne "\n${red}Error!${plain} Please use '${yellow}apt-get${plain}' or '${yellow}yum / dnf${plain}' install it.\n\n\n"
     exit 1;
   fi
 }
@@ -375,7 +377,7 @@ function selectMirror() {
   if [[ "$IsCN" == "cn" ]]; then
     MirrorBackup=(["debian0"]="" ["debian1"]="http://mirror.nju.edu.cn/debian" ["debian2"]="http://mirrors.hit.edu.cn/debian" ["debian3"]="https://mirrors.aliyun.com/debian-archive/debian" ["ubuntu0"]="" ["ubuntu1"]="https://mirrors.ustc.edu.cn/ubuntu" ["ubuntu2"]="http://mirrors.xjtu.edu.cn/ubuntu" ["kali0"]="" ["kali1"]="https://mirrors.tuna.tsinghua.edu.cn/kali" ["kali2"]="http://mirrors.zju.edu.cn/kali" ["centos0"]="" ["centos1"]="https://mirrors.ustc.edu.cn/centos-stream" ["centos2"]="https://mirrors.tuna.tsinghua.edu.cn/centos" ["centos3"]="http://mirror.nju.edu.cn/centos-altarch" ["centos4"]="https://mirrors.tuna.tsinghua.edu.cn/centos-vault" ["fedora0"]="" ["fedora1"]="https://mirrors.bfsu.edu.cn/fedora" ["fedora2"]="https://mirrors.tuna.tsinghua.edu.cn/fedora" ["rockylinux0"]="" ["rockylinux1"]="http://mirror.nju.edu.cn/rocky" ["rockylinux2"]="http://mirrors.sdu.edu.cn/rocky" ["almalinux0"]="" ["almalinux1"]="https://mirror.sjtu.edu.cn/almalinux" ["almalinux2"]="http://mirrors.neusoft.edu.cn/almalinux")
   else
-    MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://ftp.kddilabs.jp/pub/debian" ["debian3"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="http://http.kali.org/kali" ["kali2"]="https://ftp.riken.jp/Linux/kali" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://mirror.stream.centos.org" ["centos3"]="http://mirror.math.princeton.edu/pub/centos-altarch" ["centos4"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="https://download-ib01.fedoraproject.org/pub/fedora/linux" ["fedora2"]="https://download-cc-rdu01.fedoraproject.org/pub/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://ftp.riken.jp/Linux/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
+    MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/debian" ["debian3"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="https://mirrors.ocf.berkeley.edu/kali" ["kali2"]="http://ftp.jaist.ac.jp/pub/Linux/kali" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://mirror.stream.centos.org" ["centos3"]="http://mirror.centos.org/altarch" ["centos4"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="https://download-ib01.fedoraproject.org/pub/fedora/linux" ["fedora2"]="https://download-cc-rdu01.fedoraproject.org/pub/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://ftp.udx.icscoe.jp/Linux/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
   fi
   echo "$New" | grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="${New%*/}"
   for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese"); do
@@ -432,6 +434,7 @@ function ipv4Calc() {
 # $1 is $ip6Mask
 function ipv6SubnetCalc() {
   tmpIp6Subnet=""
+  ip6Subnet=""
   ip6SubnetEleNum=`expr $1 / 4`
   ip6SubnetEleNumRemain=`expr $1 - $ip6SubnetEleNum \* 4`
   if [[ "$ip6SubnetEleNumRemain" == 0 ]]; then
@@ -465,8 +468,8 @@ function getDisk() {
   [[ "$disks" == "" ]] && disks=`lsblk | sed 's/[[:space:]]*$//g' | grep "disk" | grep -i "g\|t\|p\|e\|z\|y" | cut -d' ' -f1 | head -1`
   echo "${disks: -1}" | [[ -n "`sed -n '/^[0-9][0-9]*$/p'`" ]] && disks=`echo "$disks" | sed 's/[0-9]//g'`
   [ -n "$disks" ] || echo ""
-  echo "$disks" | grep -q "/dev"
-  [ $? -eq 0 ] && echo "$disks" || echo "/dev/$disks"
+  echo "$disks" > /dev/null | grep -q "/dev"
+  [ $? -eq 0 ] && echo "$disks" > /dev/null || echo "/dev/$disks" > /dev/null
   AllDisks=""
 # Find all disks on this server.
   for Count in `lsblk | sed 's/[[:space:]]*$//g' | grep "disk$" | cut -d' ' -f1 | grep -v "fd[0-9]*\|sr[0-9]*"`; do
@@ -717,8 +720,10 @@ function checkSys() {
 }
 
 function checkIpv4OrIpv6() {
-  IPv4DNSLookup=`timeout 3 dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/\"//g'`
-  IPv6DNSLookup=`timeout 3 dig -6 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/\"//g'`
+  IPv4DNSLookup=`timeout 0.5s dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/\"//g'`
+  [[ "$IPv4DNSLookup" == "" ]] && IPv4DNSLookup=`timeout 0.5s dig -4 TXT CH +short whoami.cloudflare @1.0.0.1 | sed 's/\"//g'`
+  IPv6DNSLookup=`timeout 0.5s dig -6 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/\"//g'`
+  [[ "$IPv6DNSLookup" == "" ]] && IPv6DNSLookup=`timeout 0.5s dig -6 TXT CH +short whoami.cloudflare @2606:4700:4700::1001 | sed 's/\"//g'`
   IP_Check="$IPv4DNSLookup"
   if expr "$IP_Check" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
     for i in 1 2 3 4; do
@@ -771,6 +776,54 @@ function checkIpv4OrIpv6() {
   [[ "$IP_Check" != "isIPv4" && "$IP6_Check" == "isIPv6" ]] && IPStackType="IPv6Stack"
   # [[ "$IPStackType" == "IPv4Stack" ]] && setIPv6="0" || setIPv6="1"
   [[ "$tmpSetIPv6" == "0" ]] && setIPv6="0" || setIPv6="1"
+}
+
+# Examples:
+# input:    ::
+# output:   0:0:0:0:0:0:0:0
+# input:    2620:119:35::c4
+# output:   2620:119:35:0:0:0:0:c4
+function fillAbbrOfIpv6() {
+  inputIpv6="$1"
+# Static of how many delimiters of ":" are in one ipv6 address, only one abbreviation of "::" is allowed in one IPv6 address in principle.
+  delimiterNum=$(echo $inputIpv6 | awk '{print gsub(/:/, "")}')
+  replaceStr=""
+# A standard of IPv6 should have 7 colons, the number "7" minus total numbers of colons in an abbreviated IPv6 address and add "0" after every ":" can help us to fulfill the whole IPv6 address.
+  for ((i=0; i<=$((7-$delimiterNum)); i++)); do
+    replaceStr="$replaceStr"":0"
+  done
+# Must add one ":" after the last of expanded "0" to separate with the following IPv6 block which is not been abbreviated.
+  replaceStr="$replaceStr"":"
+# Replace abbreviated IPv6 address "::" to expanded IPv6 address($replaceStr).
+  ipv6Expanded=${inputIpv6/::/$replaceStr}
+# If the last two strings of abbreviated IPv6 is "::", we should add a "0" for the last ":" to pledge the validation of this IPv6(can't end with ":").
+  [[ "$ipv6Expanded" == *: ]] && ipv6Expanded="$ipv6Expanded""0"
+# If the first two strings of abbreviated IPv6 is "::", we should add a "0" for the first ":" to pledge the validation of this IPv6(can't begin with ":").
+  [[ "$ipv6Expanded" == :* ]] && ipv6Expanded="0""$ipv6Expanded"
+# Return IPv6 which is filled with one "0" in every abbreviated block.
+  echo "$ipv6Expanded"
+}
+
+# Examples:
+# input:    0:0:0:0:0:0:0:0
+# output:   0000:0000:0000:0000:0000:0000:0000:0000
+# input:    2620:119:35:0:0:0:0:c4
+# output:   2620:0119:0035:0000:0000:0000:0000:00c4
+function ultimateFormatOfIpv6() {
+  abbrExpandedOfIpv6=$(fillAbbrOfIpv6 "$1")
+# To make a new array names "$ipv6Hex" to storage every hex block like "2620" "119e" of IPv6, this array should have 8 indices.
+  ipv6Hex=(${abbrExpandedOfIpv6//:/ })
+  for ((j=0; j<8; j++)); do
+# Static number of strings in every hex block of IPv6.
+    length="${#ipv6Hex[j]}"
+# Use decrement cycle to count how many zeroes need to be fulfilled because there are most 4 strings in one hex block in theory.
+    for ((k=4; k>$length; k--)); do
+# Zeroes which must be added on the head if number of digits of a hexadecimal number in one hex block is less than 4.
+      ipv6Hex[j]="0${ipv6Hex[j]}"
+    done
+  done
+# Return all elements of array of "$ipv6Hex" which is filled with 4 digits in every hexadecimal block and use colon to stitch with hexes instead of space to achieve the recovery of an abbreviated IPv6 address.
+  echo ${ipv6Hex[@]} | sed 's/ /\:/g'
 }
 
 # This function help us to sort sizes for different files from different directions.
@@ -881,7 +934,7 @@ function getInterface() {
     echo "$defaultRoute" | grep -q "$item"
     [ $? -eq 0 ] && interface="$item" && break
   done
-  echo "$interface"
+  echo "$interface" > /dev/null
 # Some templates of cloud provider like Bandwagonhosts, Ubuntu 22.04, may modify parameters in " GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0" " in /etc/default/grub
 # to make Linux kernel redirect names of network adapters from real name like ens18, ens3, enp0s4 to eth0, eth1, eth2...
 # This setting may confuse program to get real adapter name from reading /proc/cat/dev
@@ -1025,7 +1078,6 @@ function getInterface() {
       exit 1
     fi
   fi
-  echo "$NetCfgWhole"
 }
 
 # To confuse whether ipv4 is dhcp or static and whether ipv6 is dhcp or static in Redhat like os in version 9 and later,
@@ -1149,9 +1201,6 @@ function checkDHCP() {
   }
   [[ "$Network4Config" == "" ]] && Network4Config="isStatic"
   [[ "$Network6Config" == "" ]] && Network6Config="isStatic"
-  echo "$IPStackType"
-  echo "$Network4Config"
-  echo "$Network6Config"
   rm -rf "$tmpNetcfgDir"
 }
 
@@ -1441,7 +1490,7 @@ fi
 # Disable SELinux
 [[ -f /etc/selinux/config ]] && {
   SELinuxStatus=$(sestatus -v | grep "SELinux status:" | grep enabled)
-  [[ "$SELinuxStatus" != "" ]] && echo -e "\033[36mDisabled SELinux\033[0m" && setenforce 0
+  [[ "$SELinuxStatus" != "" ]] && echo -ne "\n${aoiBlue}# Disabled SELinux${plain}" && setenforce 0
 }
 
 [[ ! -d "/tmp/" ]] && mkdir /tmp
@@ -1449,14 +1498,14 @@ fi
 if [[ "$loaderMode" == "0" ]]; then
   checkGrub "/boot/grub/" "/boot/grub2/" "/etc/" "grub.cfg" "grub.conf" "/boot/efi/EFI/"
   if [[ -z "$GRUBTYPE" ]]; then
-    echo -ne "\n\033[31mError: \033[0mNot Found grub.\n"
+    echo -ne "\n${red}Error!${plain} Not Found grub.\n"
     exit 1
   fi
 fi
 
 [ -n "$Relese" ] || Relese='Debian'
 linux_relese=$(echo "$Relese" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
-clear && echo -e "\n\033[36m# Check Dependence\033[0m\n"
+clear && echo -ne "\n${aoiBlue}# Check Dependence${plain}\n\n"
 
 dependence awk,basename,cat,cpio,curl,cut,dig,dirname,file,find,grep,gzip,ip,lsblk,sed,wget,xz;
 
@@ -1486,6 +1535,7 @@ checkDHCP "$CurrentOS" "$CurrentOSVer" "$IPStackType"
 
 if [[ "$setNet" == "0" ]]; then
   [[ -n "$interface" ]] || interface=`getInterface "$CurrentOS"`
+# Differences from scope link, scope host and scope global of IPv4, reference: https://qiita.com/testnin2/items/7490ff01a4fe1c7ad61f
   iAddr=`ip -4 addr show | grep -wA 5 "$interface" | grep -wv "lo\|host" | grep -w "inet" | grep -w "scope global*\|link*" | head -n 1 | awk -F " " '{for (i=2;i<=NF;i++)printf("%s ", $i);print ""}' | awk '{print$1}'`
   ipAddr=`echo ${iAddr} | cut -d'/' -f1`
   ipPrefix=`echo ${iAddr} | cut -d'/' -f2`
@@ -1535,84 +1585,201 @@ if [[ "$setNet" == "0" ]]; then
 # If there is no one of other gateway in this current network, use if access the public internet, the first hop route of this machine as the gateway.
   [[ "$ipGates" == "" || "$ipGate" == "" ]] && ipGate="$FirstRoute"
  
-# Some cloud providers like godaddy, arkecx etc, the subnet mask of IPv4 static network configuration of their original template OS is incorrect.
+# Some cloud providers like Godaddy, Arkecx, Hetzner(include DHCP) etc, the subnet mask of IPv4 static network configuration of their original template OS is incorrect.
 # The following is the sample:
+#
 # auto eth0
 #   iface eth0 inet static
-#     address 192.169.119.26
-#     gateway 156.59.39.113
+#     address 190.168.23.175
 #     netmask 255.255.255.240
 #     dns-nameservers 8.8.8.8 8.8.4.4
+#     up ip -4 route add default via 169.254.0.1 dev eth0 onlink
 #
-# The netmask tells the total number of IP in the network is only 15(255 - 240),
-# but we obsessed that there are more than 15 IP between 156.59.39.113 and 192.169.119.26 clearly.
-# So if netmask is 255.255.255.240(prefix is 28), the computer only find IP between 192.169.119.192 and 192.169.119.207,
-# the gateway 156.59.39.113 is obviously not be included in this range.
-# So we need to expand the range of the netmask(reduce the of the prefix) to make sure the IP of gateway have been contained.
+# The netmask tells the total number of IP in the network is only 15(240 - 255),
+# but we obsessed that there are more than 15 IPv4 addresses between 169.254.0.1 and 190.168.23.175 clearly.
+# So if netmask is 255.255.255.240(prefix is 28), the computer only find IP between 190.168.23.160 and 190.168.23.175,
+# the gateway 169.254.0.1 is obviously not be included in this range.
+# So we need to expand the range of the netmask(reduce the value number of the prefix) to make sure the IPv4 gateway can be contained.
 # If this mistake has not be repaired, Debian installer will return error "untouchable gateway".
-# DHCP IPv4 network doesn't be effected by this situation.
+# DHCP IPv4 network(even IPv4 netmask is "32") may not be effected by this situation.
+# The following consulted calculations are calculated by Vultr IPv4 subnet calculator, reference: https://www.vultr.com/resources/subnet-calculator/
   [[ "$Network4Config" == "isStatic" ]] && {
 # If the IP and gateway are not in the same IPv4 A class, the prefix of netmask should be "1", transfer to whole IPv4 address is 128.0.0.1
-# The range of 192.169.119.26/1 is 128.0.0.0 - 255.255.255.255, the gateway 156.59.39.113 can be included.
-    [[ `echo $ipAddr | cut -d'.' -f 1` != `echo $ipGate | cut -d'.' -f 1` ]] && ipMask=`netmask "1"`
-# If the IP and gateway are in the same IPv4 A class, not in the same IPv4 B class, the prefix of netmask should less than "8", transfer to whole IPv4 address is 255.0.0.0
-# The range of 192.169.119.26/8 is 192.0.0.0 - 192.255.255.255, the gateway can be included.
-    if [[ `echo $ipAddr | cut -d'.' -f 1` == `echo $ipGate | cut -d'.' -f 1` ]] && [[ "$ipPrefix" -gt "8" ]]; then
-      ipMask=`netmask "8"`
+# The range of 190.168.23.175/1 is 128.0.0.0 - 255.255.255.255, the gateway 169.254.0.1 can be included.
+    [[ `echo $ipAddr | cut -d'.' -f 1` != `echo $ipGate | cut -d'.' -f 1` ]] && tmpIpMask="1"
+# If the IP and gateway are in the same IPv4 A class, not in the same IPv4 B class, the prefix of netmask should less equal than "8", transfer to whole IPv4 address is 255.0.0.0
+# The range of 190.168.23.175/8 is 190.0.0.0 - 190.255.255.255, the gateway 169... can't be included.
+    if [[ `echo $ipAddr | cut -d'.' -f 1` == `echo $ipGate | cut -d'.' -f 1` ]]; then
+      tmpIpMask="8"
     fi
-# If the IP and gateway are in the same IPv4 A B class, not in the same IPv4 C class, the prefix of netmask should less than "16", transfer to whole IPv4 address is 255.255.0.0
-# The range of 192.169.119.26/16 is 192.169.0.0 - 192.169.255.255, the gateway can be included.
-    if [[ `echo $ipAddr | cut -d'.' -f 1,2` == `echo $ipGate | cut -d'.' -f 1,2` ]] && [[ "$ipPrefix" -gt "16" ]]; then
-      ipMask=`netmask "16"`
+# If the IP and gateway are in the same IPv4 A B class, not in the same IPv4 C class, the prefix of netmask should less equal than "16", transfer to whole IPv4 address is 255.255.0.0
+# The range of 190.168.23.175/16 is 190.168.0.0 - 190.168.255.255, the gateway 169... can't be included.
+    if [[ `echo $ipAddr | cut -d'.' -f 1,2` == `echo $ipGate | cut -d'.' -f 1,2` ]]; then
+      tmpIpMask="16"
     fi
-# If the IP and gateway are in the same IPv4 A B C class, not in the same IPv4 D class, the prefix of netmask should less than "24", transfer to whole IPv4 address is 255.255.255.0
-# The range of 192.169.119.26/24 is 192.169.119.0 - 192.169.119.255, the gateway can be included.
-    if [[ `echo $ipAddr | cut -d'.' -f 1,2,3` == `echo $ipGate | cut -d'.' -f 1,2,3` ]] && [[ "$ipPrefix" -gt "24" ]]; then
-      ipMask=`netmask "24"`
+# If the IP and gateway are in the same IPv4 A B C class, not in the same IPv4 D class, the prefix of netmask should less equal than "24", transfer to whole IPv4 address is 255.255.255.0
+# The range of 190.168.23.175/24 is 190.168.23.0 - 190.168.23.255, the gateway 169... can't be included.
+    if [[ `echo $ipAddr | cut -d'.' -f 1,2,3` == `echo $ipGate | cut -d'.' -f 1,2,3` ]]; then
+      tmpIpMask="24"
     fi
+    ipMask=`netmask "$tmpIpMask"`
   }
+# So in summary of the IPv4 sample in above, we should assign subnet mask "128.0.0.1"(prefix is "1") for it.
 
   [[ "$IPStackType" != "IPv4Stack" ]] && {
+# Differences from scope link, scope host and scope global of IPv6, reference: https://qiita.com/_dakc_/items/4eefa443306860bdcfde
     i6Addr=`ip -6 addr show | grep -wA 5 "$interface" | grep -wv "lo\|host" | grep -wv "link" | grep -w "inet6" | grep "scope" | grep "global" | head -n 1 | awk -F " " '{for (i=2;i<=NF;i++)printf("%s ", $i);print ""}' | awk '{print$1}'`
     ip6Addr=`echo ${i6Addr} |cut -d'/' -f1`
     ip6Mask=`echo ${i6Addr} |cut -d'/' -f2`
-# In some original template OS of akile.io etc, if mask prefix of IPv6 is 128 in static network configuration, it means there is only one IP(current server itself) in the network.
+    ip6Gate=`ip -6 route show default | grep -w "$interface" | grep -w "via" | grep "dev" | head -n 1 | awk -F " " '{for (i=3;i<=NF;i++)printf("%s ", $i);print ""}' | awk '{print$1}'`
+# IPv6 expansion algorithm code reference: https://blog.caoyu.info/expand-ipv6-by-shell.html
+    ip6AddrWhole=`ultimateFormatOfIpv6 "$ip6Addr"`
+    ip6GateWhole=`ultimateFormatOfIpv6 "$ip6Gate"`
+# In some original template OS of cloud provider like Akile.io etc,
+# if prefix of IPv6 mask is 128 in static network configuration, it means there is only one IPv6(current server itself) in the network.
 # The following is the sample:
+#
 # auto eth0
 #   iface eth0 inet6 static
-#     address 2001:b030:a42d:5d00::ffff:4e9a
-#     gateway 2001:b030:a42d:5d00::ffff
+#     address 2603:c020:8:a19b::ffff:e6da
+#     gateway 2603:c020:8:a19b::ffff
 #     netmask 128
 #     dns-nameservers 2001:4860:4860::8888
 #
 # In this condition, if IPv6 gateway has a different address with IPv6 address, the Debian installer couldn't find the correct gateway.
 # The installation will fail in the end. The reason is mostly the upstream wrongly configurated the current network of this system.
-# So we try to revise this value from "128" to "64" to expand the range of the IPv6 network and help installer to find the correct gateway.
-# DHCP IPv6 network doesn't be effected by this situation.
+# So we try to revise this value for 8 levels to expand the range of the IPv6 network and help installer to find the correct gateway.
+# DHCP IPv6 network(even IPv6 netmask is "128") may not be effected by this situation.
 # The result of function ' ipv6SubnetCalc "$ip6Mask" ' is "$ip6Subnet"
-    [[ "$Network6Config" == "isStatic" && "$ip6Mask" -ge "96" ]] && ip6Mask="64"
-    ipv6SubnetCalc "$ip6Mask"
-    ip6Gate=`ip -6 route show default | grep -w "$interface" | grep -w "via" | grep "dev" | head -n 1 | awk -F " " '{for (i=3;i<=NF;i++)printf("%s ", $i);print ""}' | awk '{print$1}'`
+# The following consulted calculations are calculated by Vultr IPv6 subnet calculator and IPv6 subnet range calculator which is provided by iP Jisuanqi.
+# Reference: https://www.vultr.com/resources/subnet-calculator-ipv6/
+#            https://ipjisuanqi.com/ipv6.html
+    [[ "$Network6Config" == "isStatic" ]] && {
+      tmpIp6AddrFirst=`echo $ip6AddrWhole | sed 's/\(.\{4\}\).*/\1/' | sed 's/[a-z]/\u&/g'`
+      tmpIp6GateFirst=`echo $ip6GateWhole | sed 's/\(.\{4\}\).*/\1/' | sed 's/[a-z]/\u&/g'`
+      if [[ "$tmpIp6AddrFirst" != "$tmpIp6GateFirst" ]]; then
+        if [[ "$((16#$tmpIp6GateFirst))" -ge "$((16#FE80))" && "$((16#$tmpIp6GateFirst))" -le "$((16#FEBF))" ]] || [[ "$((16#$tmpIp6GateFirst))" -ge "$((16#FC00))" && "$((16#$tmpIp6GateFirst))" -le "$((16#FDFF))" ]]; then
+# If some brave guys set --network "static" by force, IPv6 address, mask and gateway of IPv6 DHCP configurations like Oracle Cloud etc. are:
+# a public IPv6 address, a "128" mask, a local IPv6 gateway(starts with "fe80" mostly, like "fe80::200:f1e9:dec3:4ab").
+# The value of mask must be set as "128", not "1" which determined by first condition of above because the local IPv6 address is unique in its' network
+# and plays the role of IPv6 network discovery and identical authentication to ensure that authenticated device is certificated by upstream. 
+# Explanation of using local IPv6 address as gateway quoted from Scott Hogg:
+#
+# Link-local IPv6 addresses are on every interface of every IPv6-enabled host and router. They are essential for LAN-based Neighbor Discovery communication.
+# After the host has gone through the Duplicate Address Detection (DAD) process ensuring that its link-local address (and associated IID) is unique on the LAN segment,
+# it then proceeds to sending an ICMPv6 Router Solicitation (RS) message sourced from that address.
+#
+# There are total three IPv6 address ranges divided into local address: fe80::/10, fec0::/10, fc00::/7.
+# "fe80::/10" is similar with "169.254.0.0/16" of IPv4 of February, 2006 according to RFC 4291, ranges from fe80:0000:0000:0000:0000:0000:0000:0000 to febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff.
+# "fec0::/10" is similar with "192.168.0.0/16" of IPv4 which was deprecated and returned to public IPv6 address again of September, 2004 according to RFC 3879.
+# The function of "fec0::/10" was replaced by "fc00::/7" of October, 2005 according to RFC 4193, ranges from fc00:0000:0000:0000:0000:0000:0000:0000 to fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff.
+# So we need to calculate ranges of "fe80::/10" and "fc00::/7", if IPv6 address is public and IPv6 gateway belongs to local IPv6 address.
+# English strings in hexadecimal must be converted as capital alphabets that comparison operations can be processed by shell.
+# Reference: https://blogs.infoblox.com/ipv6-coe/fe80-1-is-a-perfectly-valid-ipv6-default-gateway-address/ chapter: Link-Local Address as Default Gateway
+#            https://www.wdic.org/w/WDIC/IPv6%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9 chapter: アドレスの種類(Types of address) → エニキャストアドレス(Anycast address)
+#            https://www.wdic.org/w/WDIC/IPv6%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9 chapter: サイトローカルアドレス(Site local address)
+#            https://www.wdic.org/w/WDIC/%E3%83%A6%E3%83%8B%E3%83%BC%E3%82%AF%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%83%A6%E3%83%8B%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9
+#            https://www.ipentec.com/document/network-format-ipv6-local-adddress chapter: IPv6のリンクローカルアドレス(Link local address of IPv6)
+#            https://www.rfc-editor.org/rfc/rfc4291.html#section-2.4 chapter: 2.4. Address Type Identification
+          tmpIp6Mask="128"
+        else
+# If the IPv6 and IPv6 gateway are not in the same IPv6 A class, the prefix of netmask should be "1",
+# transfer to whole IPv6 subnet address is 8000:0000:0000:0000:0000:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/1 is 0000:0000:0000:0000:0000:0000:0000:0000 - 7fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff, the gateway 2603:c020:0008:a19b:0000:0000:0000:ffff can be included.
+          tmpIp6Mask="1"
+        fi
+      fi
+# If the IP and gateway are in the same IPv6 A class, not in the same IPv6 B class, the prefix of netmask should less equal than "16",
+# transfer to whole IPv6 subnet address is ffff:0000:0000:0000:0000:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/16 is 2603:0000:0000:0000:0000:0000:0000:0000 - 2603:ffff:ffff:ffff:ffff:ffff:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1` == `echo $ip6GateWhole | cut -d':' -f 1` ]]; then
+        tmpIp6Mask="16"
+      fi
+# If the IP and gateway are in the same IPv6 A B class, not in the same IPv6 C class, the prefix of netmask should less equal than "32",
+# transfer to whole IPv6 subnet address is ffff:ffff:0000:0000:0000:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/32 is 2603:c020:0000:0000:0000:0000:0000:0000 - 2603:c020:ffff:ffff:ffff:ffff:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2` == `echo $ip6GateWhole | cut -d':' -f 1,2` ]]; then
+        tmpIp6Mask="32"
+      fi
+# If the IP and gateway are in the same IPv6 A B C class, not in the same IPv6 D class, the prefix of netmask should less equal than "48",
+# transfer to whole IPv6 subnet address is ffff:ffff:ffff:0000:0000:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/48 is 2603:c020:0008:0000:0000:0000:0000:0000 - 2603:c020:0008:ffff:ffff:ffff:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2,3` == `echo $ip6GateWhole | cut -d':' -f 1,2,3` ]]; then
+        tmpIp6Mask="48"
+      fi
+# If the IP and gateway are in the same IPv6 A B C D class, not in the same IPv6 E class, the prefix of netmask should less equal than "64",
+# transfer to whole IPv6 subnet address is ffff:ffff:ffff:ffff:0000:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/64 is 2603:c020:0008:a19b:0000:0000:0000:0000 - 2603:c020:0008:a19b:ffff:ffff:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2,3,4` == `echo $ip6GateWhole | cut -d':' -f 1,2,3,4` ]]; then
+        tmpIp6Mask="64"
+      fi
+# If the IP and gateway are in the same IPv6 A B C D E class, not in the same IPv6 F class, the prefix of netmask should less equal than "80",
+# transfer to whole IPv6 subnet address is ffff:ffff:ffff:ffff:ffff:0000:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/80 is 2603:c020:0008:a19b:0000:0000:0000:0000 - 2603:c020:0008:a19b:0000:ffff:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2,3,4,5` == `echo $ip6GateWhole | cut -d':' -f 1,2,3,4,5` ]]; then
+        tmpIp6Mask="80"
+      fi
+# If the IP and gateway are in the same IPv6 A B C D E F class, not in the same IPv6 G class, the prefix of netmask should less equal than "96",
+# transfer to whole IPv6 subnet address is ffff:ffff:ffff:ffff:ffff:ffff:0000:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/96 is 2603:c020:0008:a19b:0000:0000:0000:0000 - 2603:c020:0008:a19b:0000:0000:ffff:ffff, the gateway 2603:... can be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2,3,4,5,6` == `echo $ip6GateWhole | cut -d':' -f 1,2,3,4,5,6` ]]; then
+        tmpIp6Mask="96"
+      fi
+# If the IP and gateway are in the same IPv6 A B C D E F G class, not in the same IPv6 H class, the prefix of netmask should less equal than "112",
+# transfer to whole IPv6 subnet address is ffff:ffff:ffff:ffff:ffff:ffff:ffff:0000.
+# The range of 2603:c020:8:a19b::ffff:e6da/112 is 2603:c020:0008:a19b:0000:0000:ffff:0000 - 2603:c020:0008:a19b:0000:0000:ffff:ffff, the gateway 2603:c020:0008:a19b:0000:0000:0000:ffff can't be included.
+      if [[ `echo $ip6AddrWhole | cut -d':' -f 1,2,3,4,5,6,7` == `echo $ip6GateWhole | cut -d':' -f 1,2,3,4,5,6,7` ]]; then
+        tmpIp6Mask="112"
+      fi
+      ip6Mask="$tmpIp6Mask"
+# Because of function "ipv6SubnetCalc" includes self-increment,
+# so we need to confirm the goal of IPv6 prefix and make function to operate only one time in the last to save performance and avoid all
+# gears of IPv6 prefix which meets well with the conditions of above are transformed to whole IPv6 addresses in one variable.
+# The same thought of moving function "netmask" to the last, only need to transform IPv4 prefix to whole IPv4 address for one time.
+      ipv6SubnetCalc "$ip6Mask"
+    }    
+# So in summary of the IPv6 sample in above, we should assign subnet mask "ffff:ffff:ffff:ffff:ffff:ffff:0000:0000"(prefix is "96") for it.
   }
 fi
 
 IPv4="$ipAddr"; MASK="$ipMask"; GATE="$ipGate";
-[[ -z "$IPv4" && -z "$MASK" && -z "$GATE" ]] && {
+[[ -z "$IPStackType" ]] && {
   echo -ne "\n[${red}Error${plain}] The network of your machine may not be available!\n"
   bash $0 error
   exit 1
 }
 
+echo -ne "\n${aoiBlue}# Network Details${plain}\n"
+echo -ne "\n[${yellow}Adapter Name${plain}]  $interface"
+echo -ne "\n[${yellow}Network File${plain}]  $NetCfgWhole"
+echo -ne "\n[${yellow}Server Stack${plain}]  $IPStackType\n"
+[[ "$IPStackType" != "IPv6Stack" ]] && echo -ne "\n[${yellow}IPv4  Method${plain}]  $Network4Config\n" || echo -ne "\n[${yellow}IPv4  Method${plain}]  N/A\n"
+[[ "$IPv4" ]] && echo -e "[${yellow}IPv4 Address${plain}]  ""$IPv4" || echo -e "[${yellow}IPv4 Address${plain}]  ""N/A"
+[[ "$IPv4" ]] && echo -e "[${yellow}IPv4  Subnet${plain}]  ""$MASK" || echo -e "[${yellow}IPv4  Subnet${plain}]  ""N/A"
+[[ "$IPv4" ]] && echo -e "[${yellow}IPv4 Gateway${plain}]  ""$GATE" || echo -e "[${yellow}IPv4 Gateway${plain}]  ""N/A"
+[[ "$IPv4" ]] && echo -e "[${yellow}IPv4     DNS${plain}]  ""$ipDNS" || echo -e "[${yellow}IPv4     DNS${plain}]  ""N/A"
+[[ "$IPStackType" != "IPv4Stack" ]] && echo -ne "\n[${yellow}IPv6  Method${plain}]  $Network6Config\n" || echo -ne "\n[${yellow}IPv6  Method${plain}]  N/A\n"
+[[ "$IPStackType" != "IPv4Stack" ]] && echo -e "[${yellow}IPv6 Address${plain}]  ""$ip6Addr" || echo -e "[${yellow}IPv6 Address${plain}]  ""N/A"
+[[ "$IPStackType" != "IPv4Stack" ]] && echo -e "[${yellow}IPv6  Subnet${plain}]  ""$ip6Mask" || echo -e "[${yellow}IPv6  Subnet${plain}]  ""N/A"
+[[ "$IPStackType" != "IPv4Stack" ]] && echo -e "[${yellow}IPv6 Gateway${plain}]  ""$ip6Gate" || echo -e "[${yellow}IPv6 Gateway${plain}]  ""N/A"
+[[ "$IPStackType" != "IPv4Stack" ]] && echo -e "[${yellow}IPv6     DNS${plain}]  ""$ip6DNS" || echo -e "[${yellow}IPv6     DNS${plain}]  ""N/A"
+
 getUserTimezone "/root/timezonelists" "ZGEyMGNhYjhhMWM2NDJlMGE0YmZhMDVmMDZlNzBmN2E=" "ZTNlMjBiN2JjOTE2NGY2YjllNzUzYWU5ZDFjYjdjOTc=" "MWQ2NGViMGQ4ZmNlNGMzYTkxYjNiMTdmZDMxODQwZDc="
+echo -ne "\n${aoiBlue}# User Timezone${plain}\n\n"
+echo "$TimeZone"
 
 [ -n "$tmpWORD" ] && dependence openssl
 [[ -n "$tmpWORD" ]] && myPASSWORD=$(openssl passwd -1 ''$tmpWORD'')
 [[ -z "$myPASSWORD" ]] && myPASSWORD='$1$OCy2O5bt$m2N6XMgFUwCn/2PPP114J/'
+echo -ne "\n${aoiBlue}# SSH Port${plain}\n\n"
+echo "$sshPORT"
 
 getDisk
 tempDisk=`getDisk`
 [ -n "$tempDisk" ] && IncDisk="$tempDisk"
 [[ "$setRaid" == "0" ]] && IncDisk="/dev/sda"
+echo -ne "\n${aoiBlue}# Installing Disks${plain}\n\n"
+echo "$AllDisks"
 
 # Get architecture of current os automatically
 ArchName=`uname -m`
@@ -1655,7 +1822,7 @@ if [[ -n "$tmpVER" ]]; then
 fi
 
 [[ ! -n "$VER" ]] && {
-  echo -ne "\n\033[31mError: \033[0mUnknown architecture.\n"
+  echo -ne "\n${red}Error!${plain} Unknown architecture.\n"
   bash $0 error
   exit 1
 }
@@ -1734,16 +1901,16 @@ if [[ -n "$tmpDIST" ]]; then
       [[ "$RedHatSeries" =~ [0-9]{${#1}} ]] && {
         if [[ "$RedHatSeries" == "6" ]]; then
           DISTCheck="6.10"
-          echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck is not supported!\n"
+          echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck is not supported!\n"
           exit 1
         elif [[ "$RedHatSeries" == "7" ]]; then
           DISTCheck="7.9.2009"
         elif [[ "$RedHatSeries" -ge "8" ]] && [[ ! "$RedHatSeries" =~ "-stream" ]]; then
           DISTCheck="$RedHatSeries""-stream"
         elif [[ "$RedHatSeries" -le "5" ]]; then
-          echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck is not supported!\n"
+          echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck is not supported!\n"
         else
-          echo -ne "\n\033[33mError: \033[0mInvaild $DIST! version!\n"
+          echo -ne "\n${red}Error!${plain} Invaild $DIST! version!\n"
         fi
       }
       LinuxMirror=$(selectMirror "$Relese" "$DISTCheck" "$VER" "$tmpMirror")
@@ -1756,12 +1923,12 @@ if [[ -n "$tmpDIST" ]]; then
 # AlmaLinux releases history:
 # https://wiki.almalinux.org/release-notes/
         if [[ "$linux_relese" == 'rockylinux' || "$linux_relese" == 'almalinux' ]] && [[ "$RedHatSeries" -le "7" ]]; then
-          echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck is not supported!\n"
+          echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck is not supported!\n"
           exit 1
 # Fedora releases history:
 # https://en.wikipedia.org/wiki/Fedora_Linux_release_history
         elif [[ "$linux_relese" == 'fedora' ]] && [[ "$RedHatSeries" -le "35" ]]; then
-          echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck is not supported!\n"
+          echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck is not supported!\n"
           exit 1
         fi
       }
@@ -1776,19 +1943,19 @@ if [[ -n "$tmpDIST" ]]; then
     if [[ "$linux_relese" == 'centos' ]] && [[ "$RedHatSeries" -le "7" ]]; then
       wget --no-check-certificate -qO- "$LinuxMirror/$DIST/os/$VER/.treeinfo" | grep -q 'general'
       [[ $? != '0' ]] && {
-        echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
+        echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
         exit 1
       }
     elif [[ "$linux_relese" == 'centos' && "$RedHatSeries" -ge "8" ]] || [[ "$linux_relese" == 'rockylinux' ]] || [[ "$linux_relese" == 'almalinux' ]]; then
       wget --no-check-certificate -qO- "$LinuxMirror/$DIST/BaseOS/$VER/os/media.repo" | grep -q 'mediaid'
       [[ $? != '0' ]] && {
-        echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
+        echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
         exit 1
       }
     elif [[ "$linux_relese" == 'fedora' ]]; then
       wget --no-check-certificate -qO- "$LinuxMirror/releases/$DIST/Server/$VER/os/media.repo" | grep -q 'mediaid'
       [[ $? != '0' ]] && {
-        echo -ne "\n\033[33mWarning: \033[0m$Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
+        echo -ne "\n${red}Warning:${plain} $Relese $DISTCheck was not found in this mirror, Please change mirror try again!\n"
         exit 1
       }
     fi    
@@ -1796,21 +1963,21 @@ if [[ -n "$tmpDIST" ]]; then
 fi
 
 [[ -z "$LinuxMirror" ]] && {
-  echo -ne "\033[31mError! \033[0mInvaild mirror! \n"
-  [ "$Relese" == 'Debian' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://www.debian.org/mirror/list\n\n"
-  [ "$Relese" == 'Ubuntu' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://launchpad.net/ubuntu/+archivemirrors\n\n"
-  [ "$Relese" == 'Kali' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://http.kali.org/README.mirrorlist\n\n"
-  [ "$Relese" == 'CentOS' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://www.centos.org/download/mirrors/\n\n"
-  [ "$Relese" == 'RockyLinux' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://mirrors.rockylinux.org/mirrormanager/mirrors\n\n"
-  [ "$Relese" == 'AlmaLinux' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://mirrors.almalinux.org/\n\n"
-  [ "$Relese" == 'Fedora' ] && echo -en "\033[33mPlease check mirror lists:\033[0m https://mirrors.fedoraproject.org/\n\n"
+  echo -ne "${red}Error! ${plain}Invaild mirror! \n"
+  [ "$Relese" == 'Debian' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://www.debian.org/mirror/list\n\n"
+  [ "$Relese" == 'Ubuntu' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://launchpad.net/ubuntu/+archivemirrors\n\n"
+  [ "$Relese" == 'Kali' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://http.kali.org/README.mirrorlist\n\n"
+  [ "$Relese" == 'CentOS' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://www.centos.org/download/mirrors/\n\n"
+  [ "$Relese" == 'RockyLinux' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://mirrors.rockylinux.org/mirrormanager/mirrors\n\n"
+  [ "$Relese" == 'AlmaLinux' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://mirrors.almalinux.org/\n\n"
+  [ "$Relese" == 'Fedora' ] && echo -ne "${yellow}Please check mirror lists:${plain} https://mirrors.fedoraproject.org/\n\n"
   bash $0 error
   exit 1
 }
 
 [[ "$setNetbootXyz" == "1" ]] && SpikCheckDIST="1"
 if [[ "$SpikCheckDIST" == '0' ]]; then
-  echo -e "\n\033[36m# Check DIST\033[0m"
+  echo -ne "\n${aoiBlue}# Check DIST${plain}\n"
   DistsList="$(wget --no-check-certificate -qO- "$LinuxMirror/dists/" |grep -o 'href=.*/"' |cut -d'"' -f2 |sed '/-\|old\|Debian\|experimental\|stable\|test\|sid\|devel/d' |grep '^[^/]' |sed -n '1h;1!H;$g;s/\n//g;s/\//\;/g;$p')"
   [[ "$linux_relese" == "kali" ]] && DistsList="$(wget --no-check-certificate -qO- "$LinuxMirror/dists/" | grep -o 'href=.*/"' | cut -d'"' -f2 | grep '^[^/]' | sed -n '1h;1!H;$g;s/\n//g;s/\//\;/g;$p')"
   for CheckDEB in `echo "$DistsList" |sed 's/;/\n/g'`
@@ -1821,7 +1988,7 @@ if [[ "$SpikCheckDIST" == '0' ]]; then
       [[ "$CheckDEB" =~ "$DIST" ]] && FindDists='1' && break;
     done
   [[ "$FindDists" == '0' ]] && {
-    echo -ne '\n\033[31mError! \033[0mThe dists version not found, Please check it! \n\n'
+    echo -ne '\n${red}Error!${plain} The dists version not found, Please check it! \n\n'
     bash $0 error
     exit 1
   }
@@ -1849,9 +2016,9 @@ if [[ "$ddMode" == '1' ]]; then
   fi
 fi
 
-clear && echo -e "\n\033[36m# Install\033[0m\n"
+echo -ne "\n${aoiBlue}# Installation Starting${plain}\n"
 
-[[ "$ddMode" == '1' ]] && echo -ne "\033[34mAuto Mode\033[0m insatll \033[33mWindows\033[0m\n[\033[33m$DDURL\033[0m]\n"
+[[ "$ddMode" == '1' ]] && echo -ne "${blue}Auto Mode${plain} insatll [${yellow}Windows${plain}]\n$DDURL\n"
 
 if [ -z "$interfaceSelect" ]; then
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ "$linux_relese" == 'kali' ]]; then
@@ -1873,11 +2040,11 @@ if [[ "$linux_relese" == 'centos' ]]; then
     awk 'BEGIN{print '${UNVER}'-'${DIST}'}' |grep -q '^-'
     if [ $? != '0' ]; then
       UNKNOWHW='1'
-      echo -en "\033[33mThe version lower then \033[31m$UNVER\033[33m may not support in auto mode! \033[0m\n";
+      echo -ne "\nThe version lower than ${red}$UNVER${plain} may not support in auto mode!\n"
     fi
   fi
 fi
-[[ "$setNetbootXyz" == "0" ]] && echo -e "\n[\033[33m$Relese\033[0m] [\033[33m$DIST\033[0m] [\033[33m$VER\033[0m] Downloading...\n" || echo -e "\n[\033[33mnetboot.xyz\033[0m] Downloading...\n"
+[[ "$setNetbootXyz" == "0" ]] && echo -ne "\n[${yellow}$Relese${plain}] [${yellow}$DIST${plain}] [${yellow}$VER${plain}] Downloading...\n" || echo -ne "\n[${yellow}netboot.xyz${plain}] Downloading...\n"
 
 # RAM of RedHat series is 2GB required at least.
 [[ "$setNetbootXyz" == "0" ]] && {
@@ -1890,7 +2057,7 @@ fi
 if [[ "$setNetbootXyz" == "1" ]]; then
   [[ "$VER" == "x86_64" || "$VER" == "amd64" ]] && apt install grub-imageboot -y
   if [[ "$EfiSupport" == "enabled" ]] || [[ "$VER" == "aarch64" || "$VER" == "arm64" ]]; then
-    echo -ne "\n\033[31mError: \033[0mNetbootxyz doesn't support $VER architecture!\n"
+    echo -ne "\n${red}Error!${plain} Netbootxyz doesn't support $VER architecture!\n"
     bash $0 error
     exit 1
   fi
@@ -1905,7 +2072,7 @@ if [[ "$setNetbootXyz" == "1" ]]; then
   fi
   [[ ! -d "/boot/images/" ]] && mkdir /boot/images/
   rm -rf /boot/images/netboot.xyz.iso
-  echo -e "[\033[33mMirror\033[0m] $NetbootXyzUrl\n"
+  echo -ne "[${yellow}Mirror${plain}] $NetbootXyzUrl\n"
   wget --no-check-certificate -qO '/boot/images/netboot.xyz.iso' "$NetbootXyzUrl"
   [[ ! -f "/etc/grub.d/60_grub-imageboot" ]] && wget --no-check-certificate -qO '/etc/grub.d/60_grub-imageboot' "$NetbootXyzGrub"
   chmod 755 /etc/grub.d/60_grub-imageboot
@@ -1922,38 +2089,38 @@ elif [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [
     InitrdUrl="${LinuxMirror}/dists/${DIST}/main/installer-${VER}/current/images/netboot/debian-installer/${VER}/initrd.gz"
     VmLinuzUrl="${LinuxMirror}/dists/${DIST}/main/installer-${VER}/current/images/netboot/debian-installer/${VER}/linux"
   }
-  echo -e "[\033[33mMirror\033[0m] $InitrdUrl\n\t $VmLinuzUrl\n"
+  echo -ne "[${yellow}Mirror${plain}] $InitrdUrl\n\t $VmLinuzUrl\n"
   wget --no-check-certificate -qO '/tmp/initrd.img' "$InitrdUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'initrd.img' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'initrd.img' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
   wget --no-check-certificate -qO '/tmp/vmlinuz' "$VmLinuzUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'vmlinuz' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'vmlinuz' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
   MirrorHost="$(echo "$LinuxMirror" |awk -F'://|/' '{print $2}')"
   MirrorFolder="$(echo "$LinuxMirror" |awk -F''${MirrorHost}'' '{print $2}')"
   [ -n "$MirrorFolder" ] || MirrorFolder="/"
 elif [[ "$linux_relese" == 'centos' ]] && [[ "$RedHatSeries" -le "7" ]]; then
   InitrdUrl="${LinuxMirror}/${DIST}/os/${VER}/images/pxeboot/initrd.img"
   VmLinuzUrl="${LinuxMirror}/${DIST}/os/${VER}/images/pxeboot/vmlinuz"
-  echo -e "[\033[33mMirror\033[0m] $InitrdUrl\n\t $VmLinuzUrl\n"
+  echo -ne "[${yellow}Mirror${plain}] $InitrdUrl\n\t $VmLinuzUrl\n"
   wget --no-check-certificate -qO '/tmp/initrd.img' "$InitrdUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'initrd.img' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'initrd.img' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
   wget --no-check-certificate -qO '/tmp/vmlinuz' "$VmLinuzUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'vmlinuz' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'vmlinuz' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
 elif [[ "$linux_relese" == 'centos' && "$RedHatSeries" -ge "8" ]] || [[ "$linux_relese" == 'rockylinux' ]] || [[ "$linux_relese" == 'almalinux' ]]; then
   InitrdUrl="${LinuxMirror}/${DIST}/BaseOS/${VER}/os/images/pxeboot/initrd.img"
   VmLinuzUrl="${LinuxMirror}/${DIST}/BaseOS/${VER}/os/images/pxeboot/vmlinuz"
-  echo -e "[\033[33mMirror\033[0m] $InitrdUrl\n\t $VmLinuzUrl\n"
+  echo -ne "[${yellow}Mirror${plain}] $InitrdUrl\n\t $VmLinuzUrl\n"
   wget --no-check-certificate -qO '/tmp/initrd.img' "$InitrdUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'initrd.img' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'initrd.img' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
   wget --no-check-certificate -qO '/tmp/vmlinuz' "$VmLinuzUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'vmlinuz' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'vmlinuz' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
 elif [[ "$linux_relese" == 'fedora' ]]; then
   InitrdUrl="${LinuxMirror}/releases/${DIST}/Server/${VER}/os/images/pxeboot/initrd.img"
   VmLinuzUrl="${LinuxMirror}/releases/${DIST}/Server/${VER}/os/images/pxeboot/vmlinuz"
-  echo -e "[\033[33mMirror\033[0m] $InitrdUrl\n\t $VmLinuzUrl\n"
+  echo -ne "[${yellow}Mirror${plain}] $InitrdUrl\n\t $VmLinuzUrl\n"
   wget --no-check-certificate -qO '/tmp/initrd.img' "$InitrdUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'initrd.img' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'initrd.img' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
   wget --no-check-certificate -qO '/tmp/vmlinuz' "$VmLinuzUrl"
-  [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'vmlinuz' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
+  [[ $? -ne '0' ]] && echo -ne "${red}Error!${plain} Download 'vmlinuz' for ${yellow}$linux_relese${plain} failed! \n" && exit 1
 else
   bash $0 error
   exit 1
@@ -1980,9 +2147,9 @@ if [[ "$IncFirmware" == '1' ]]; then
       [[ $? -ne '0' ]] && echo -ne "\n[${red}Error${plain}] Download firmware for ${red}$linux_relese${plain} failed! \n" && exit 1    
       rm -rf /root/kaliFirmwareCheck
     else
-      wget --no-check-certificate -qO /root/kaliFirmwareCheck 'http://http.kali.org/pool/non-free/f/firmware-nonfree/?C=S;O=D'
-      kaliFirmwareName=$(grep "href=\"firmware-nonfree" /root/kaliFirmwareCheck | head -n 1 | awk -F'\">' '/tar.xz/{print $4}' | cut -d'<' -f1 | cut -d'/' -f2)
-      wget --no-check-certificate -qO '/tmp/kali_firmware.tar.xz' "http://http.kali.org/pool/non-free/f/firmware-nonfree/$kaliFirmwareName"
+      wget --no-check-certificate -qO /root/kaliFirmwareCheck 'https://mirrors.ocf.berkeley.edu/kali/pool/non-free/f/firmware-nonfree/?C=S&O=D'
+      kaliFirmwareName=$(grep "href=\"firmware-nonfree" /root/kaliFirmwareCheck | head -n 1 | awk -F'\">' '/tar.xz/{print $3}' | cut -d'<' -f1 | cut -d'/' -f2)
+      wget --no-check-certificate -qO '/tmp/kali_firmware.tar.xz' "https://mirrors.ocf.berkeley.edu/kali/pool/non-free/f/firmware-nonfree/$kaliFirmwareName"
       [[ $? -ne '0' ]] && echo -ne "\n[${red}Error${plain}] Download firmware for ${red}$linux_relese${plain} failed! \n" && exit 1
       rm -rf /root/kaliFirmwareCheck
     fi
@@ -2030,9 +2197,9 @@ if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ 
   fi
 # If server has only one disk, lv/vg/pv volumes removement by force should be disallowed, it may causes partitioner continuous execution but not finished.
   if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
-    sed -i '/lvremove --select all -ff -y/d' /tmp/boot/preseed.cfg
-    sed -i '/vgremove --select all -ff -y/d' /tmp/boot/preseed.cfg
-    sed -i '/pvremove /dev/* -ff -y/d' /tmp/boot/preseed.cfg
+    sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
   fi
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'kali' ]]; then
     sed -i '/user-setup\/allow-password-weak/d' /tmp/boot/preseed.cfg
@@ -2150,11 +2317,11 @@ elif [[ "$linux_relese" == 'centos' ]] || [[ "$linux_relese" == 'rockylinux' ]] 
   if [[ "$Network4Config" == "isDHCP" ]] && [[ "$Network6Config" == "isDHCP" ]]; then
     NetConfigManually="network --device=$interface --bootproto=dhcp --ipv6=auto --hostname=$(hostname) --onboot=on"
   elif [[ "$Network4Config" == "isDHCP" ]] && [[ "$Network6Config" == "isStatic" ]]; then
-    NetConfigManually="network --device=$interface --bootproto=dhcp --ipv6=$i6Addr --ipv6gateway=$ip6Gate --nameserver=$ipDNS,$ip6DNS --hostname=$(hostname) --onboot=on"
+    NetConfigManually="network --device=$interface --bootproto=dhcp --ipv6=$ip6Addr/$ip6Mask --ipv6gateway=$ip6Gate --nameserver=$ipDNS,$ip6DNS --hostname=$(hostname) --onboot=on"
   elif [[ "$Network4Config" == "isStatic" ]] && [[ "$Network6Config" == "isDHCP" ]]; then
     NetConfigManually="network --device=$interface --bootproto=static --ip=$IPv4 --netmask=$MASK --gateway=$GATE --ipv6=auto --nameserver=$ipDNS,$ip6DNS --hostname=$(hostname) --onboot=on"
   elif [[ "$Network4Config" == "isStatic" ]] && [[ "$Network6Config" == "isStatic" ]]; then
-    NetConfigManually="network --device=$interface --bootproto=static --ip=$IPv4 --netmask=$MASK --gateway=$GATE --ipv6=$i6Addr --ipv6gateway=$ip6Gate --nameserver=$ipDNS,$ip6DNS --hostname=$(hostname) --onboot=on"
+    NetConfigManually="network --device=$interface --bootproto=static --ip=$IPv4 --netmask=$MASK --gateway=$GATE --ipv6=$ip6Addr/$ip6Mask --ipv6gateway=$ip6Gate --nameserver=$ipDNS,$ip6DNS --hostname=$(hostname) --onboot=on"
   fi
 if [[ "$setAutoConfig" == "1" ]]; then
   cat >/tmp/boot/ks.cfg<<EOF
@@ -2344,16 +2511,16 @@ if [[ ! -z "$GRUBTYPE" && "$GRUBTYPE" == "isGrub1" ]]; then
         [ "$tmpCFG" -gt "$CFG0" -a "$tmpCFG" -lt "$CFG2" ] && CFG1="$tmpCFG";
       done
       [[ -z "$CFG1" ]] && {
-        echo "Error! read $GRUBFILE.\n";
+        echo -ne "\n${red}Error!${plain} read $GRUBFILE.\n";
         exit 1;
       }
       sed -n "$CFG0,$CFG1"p $READGRUB >/tmp/grub.new;
       [[ -f /tmp/grub.new ]] && [[ "$(grep -c '{' /tmp/grub.new)" -eq "$(grep -c '}' /tmp/grub.new)" ]] || {
-        echo -ne "\033[31mError! \033[0mNot configure $GRUBFILE.\n";
+        echo -ne "\n${red}Error!${plain} Not configure $GRUBFILE.\n";
         exit 1;
       }
     fi  
-    [ ! -f /tmp/grub.new ] && echo -ne "\033[31mError! \033[0m $GRUBFILE. " && exit 1;
+    [ ! -f /tmp/grub.new ] && echo -ne "\n${red}Error!${plain} $GRUBFILE. " && exit 1;
     sed -i "/menuentry.*/c\menuentry\ \'Install OS \[$Relese\ $DIST\ $VER\]\'\ --class debian\ --class\ gnu-linux\ --class\ gnu\ --class\ os\ \{" /tmp/grub.new
     sed -i "/echo.*Loading/d" /tmp/grub.new;
     INSERTGRUB="$(awk '/menuentry /{print NR}' $GRUBDIR/$GRUBFILE|head -n 1)"
@@ -2361,7 +2528,7 @@ if [[ ! -z "$GRUBTYPE" && "$GRUBTYPE" == "isGrub1" ]]; then
     [[ -n "$(grep 'linux.*/\|kernel.*/' /tmp/grub.new |awk '{print $2}' |tail -n 1 |grep '^/boot/')" ]] && Type='InBoot' || Type='NoBoot';
   
     LinuxKernel="$(grep 'linux.*/\|kernel.*/' /tmp/grub.new |awk '{print $1}' |head -n 1)";
-    [[ -z "$LinuxKernel" ]] && echo -ne "\n\033[31mError: \033[0mread grub config!\n" && exit 1;
+    [[ -z "$LinuxKernel" ]] && echo -ne "\n${red}Error!${plain} read grub config!\n" && exit 1;
     LinuxIMG="$(grep 'initrd.*/' /tmp/grub.new |awk '{print $1}' |tail -n 1)";
     [ -z "$LinuxIMG" ] && sed -i "/$LinuxKernel.*\//a\\\tinitrd\ \/" /tmp/grub.new && LinuxIMG='initrd';
 # If network adapter need to redirect eth0, eth1... in new system, add this setting in grub file of the current system for netboot install file which need to be loaded after restart.
@@ -2510,16 +2677,16 @@ elif [[ ! -z "$GRUBTYPE" && "$GRUBTYPE" == "isGrub2" ]]; then
       CFG1="$SetRootCfg"
     fi
     [[ -z "$CFG0" || -z "$CFG1" ]] && {
-      echo -ne "\n\033[31mError: \033[0mread $GRUBFILE.\n"
+      echo -ne "\n${red}Error!${plain} read $GRUBFILE.\n"
       exit 1
     }
     sed -n "$CFG0,$CFG1"p $GRUBDIR/$GRUBFILE >/tmp/grub.new
     sed -i -e 's/^/  /' /tmp/grub.new
     [[ -f /tmp/grub.new ]] && [[ "$(grep -c '{' /tmp/grub.new)" -eq "$(grep -c '}' /tmp/grub.new)" ]] || {
-      echo -ne "\033[31mError! \033[0mNot configure $GRUBFILE. \n"
+      echo -ne "\n${red}Error!${plain} Not configure $GRUBFILE. \n"
       exit 1
     }
-    [ ! -f /tmp/grub.new ] && echo -e "\n\033[31mError: \033[0m$GRUBFILE.\n" && exit 1
+    [ ! -f /tmp/grub.new ] && echo -ne "\n${red}Error!${plain} $GRUBFILE.\n" && exit 1
 # Set IPv6 or distribute unite network adapter interface
     [[ "$setInterfaceName" == "1" ]] && Add_OPTION="net.ifnames=0 biosdevname=0" || Add_OPTION=""
     [[ "$setIPv6" == "0" ]] && Add_OPTION="$Add_OPTION ipv6.disable=1" || Add_OPTION="$Add_OPTION"
