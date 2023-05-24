@@ -6,7 +6,7 @@ wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent
 ```
 # #Using Ubuntu18
 ```
-wget -qO- 1keydd.com/inst.sh | bash -s - -t https://win.akumavm.com/akuma100.gz
+wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc.sh | bash -s - -t https://win.akumavm.com/akuma100.gz
 ```
 
 # #Via Kernel Installation
