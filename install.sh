@@ -252,7 +252,7 @@ function diskType(){
   echo `udevadm info --query all "$1" 2>/dev/null |grep 'ID_PART_TABLE_TYPE' |cut -d'=' -f2`
 }
 
-function getGrub() {
+function checkGrub() {
   GRUBDIR=""
   GRUBFILE=""
   for Count in "$1" "$2" "$3"; do
@@ -285,6 +285,23 @@ function getGrub() {
       GRUBTYPE="isGrub1"
     fi
   fi
+}
+
+function getGrub(){
+  Boot="${1:-/boot}"
+  folder=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n1`
+  [ -n "$folder" ] || return
+  fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
+  if [ -z "$fileName" ]; then
+    ls -1 "$folder" 2>/dev/null |grep -q '^grubenv$'
+    [ $? -eq 0 ] || return
+    folder=`find "$Boot" -type f -name "grubenv" 2>/dev/null |xargs dirname |grep -v "^$folder" |head -n1`
+    [ -n "$folder" ] || return
+    fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
+  fi
+  [ -n "$fileName" ] || return
+  [ "$fileName" == "grub.cfg" ] && ver="0" || ver="1"
+  echo "${folder}:${fileName}:${ver}"
 }
 
 function lowMem(){
