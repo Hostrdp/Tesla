@@ -2186,11 +2186,11 @@ if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ 
     sed -i '/netcfg\/confirm_static/d' /tmp/boot/preseed.cfg
   fi
 # If server has only one disk, lv/vg/pv volumes removement by force should be disallowed, it may causes partitioner continuous execution but not finished.
-  if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
-    sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
-    sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
-    sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
-  fi
+  #if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
+    #sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    #sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    #sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
+  #fi
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'kali' ]]; then
     sed -i '/user-setup\/allow-password-weak/d' /tmp/boot/preseed.cfg
     sed -i '/user-setup\/encrypt-home/d' /tmp/boot/preseed.cfg
