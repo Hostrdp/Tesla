@@ -33,7 +33,7 @@ export TimeZone=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='1.0.0.1 8.8.4.4'
+export ipDNS='1.1.1.1 8.8.8.1'
 export ip6Addr=''
 export ip6Mask=''
 export ip6Gate=''
@@ -1201,7 +1201,7 @@ function DebianModifiedPreseed() {
 # Can't pass parameters correctly in preseed environment
 # DebianVimVer=`ls -a /usr/share/vim | grep vim[0-9]`
     DebianVimVer="vim"`expr ${DebianDistNum} + 71`
-    [[ "$DIST" == "bookworm" || "$DIST" == "kali-rolling" ]] && DebianVimVer="vim90"
+    [[ "$DIST" == "bullseye" || "$DIST" == "kali-rolling" ]] && DebianVimVer="vim90"
     AptUpdating="$1 apt update;"
 # pre-install some commonly used software.
     InstallComponents="$1 apt install sudo apt-transport-https bc binutils ca-certificates cron curl debian-keyring debian-archive-keyring dnsutils dosfstools dpkg efibootmgr ethtool fail2ban file figlet iptables iptables-persistent iputils-tracepath jq lrzsz libnet-ifconfig-wrapper-perl lsof libnss3 lsb-release mtr-tiny mlocate netcat-openbsd net-tools ncdu nmap ntfs-3g parted psmisc python3 socat sosreport subnetcalc tcpdump telnet traceroute unzip unrar-free uuid-runtime vim vim-gtk3 wget xz-utils -y;"
@@ -1502,7 +1502,7 @@ dependence awk,basename,cat,cpio,curl,cut,dig,dirname,file,find,grep,gzip,ip,lsb
 [[ "$ddMode" == '1' ]] && {
   dependence iconv
   linux_relese='debian'
-  tmpDIST='bookworm'
+  tmpDIST='bullseye'
   tmpVER=''
 }
 
