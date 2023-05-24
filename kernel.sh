@@ -189,8 +189,8 @@ function Start() {
   if [ -f "/tmp/InstallNET.sh" ]; then
     rm -f /tmp/InstallNET.sh
   fi
-  #curl -sSL -o /tmp/InstallNET.sh 'https://fastly.jsdelivr.net/gh/hiCasper/Shell@latest/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  curl -sSL -o /tmp/InstallNET.sh 'https://fastly.jsdelivr.net/gh/hiCasper/Shell@latest/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
   #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/fcurrk/reinstall/master/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
 
   CMIRROR=''
@@ -247,7 +247,7 @@ function Start() {
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
     13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
-    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/windows.img' $DMIRROR ;;
+    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma100.gz' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
