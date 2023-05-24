@@ -252,40 +252,7 @@ function diskType(){
   echo `udevadm info --query all "$1" 2>/dev/null |grep 'ID_PART_TABLE_TYPE' |cut -d'=' -f2`
 }
 
-function checkGrub() {
-  GRUBDIR=""
-  GRUBFILE=""
-  for Count in "$1" "$2" "$3"; do
-# don't support grub1
-    if [[ -f "$Count""$4" ]] && [[ `grep -c "insmod*" $Count$4` -ge "1" ]]; then
-      GRUBDIR="$Count"
-      GRUBFILE="$4"
-    elif [[ -f "$Count""$5" ]] && [[ `grep -c "insmod*" $Count$5` -ge "1" ]]; then
-      GRUBDIR="$Count"
-      GRUBFILE="$5"
-    fi
-  done
-  if [[ -z "$GRUBFILE" ]] || [[ `grep -c "insmod*" $GRUBDIR$GRUBFILE` == "0" ]]; then
-    for Count in "$4" "$5"; do
-      GRUBFILE=`find "$6" -name "$Count"`
-      if [[ -n "$GRUBFILE" ]]; then
-        GRUBDIR=`echo "$GRUBFILE" | sed "s/$Count//g"`
-        GRUBFILE="$Count"
-        break
-      fi
-    done
-  fi
-  GRUBDIR=`echo ${GRUBDIR%?}`
-  if [[ `awk '/menuentry*/{print NF}' $GRUBDIR/$GRUBFILE | head -n 1` -ge "1" ]] || [[ `awk '/feature*/{print $a}' $GRUBDIR/$GRUBFILE | head -n 1` != "" ]]; then
-    if [[ -n `grep -w "grub2-mkconfig" $GRUBDIR/$GRUBFILE` ]] || [[ `type grub2-mkconfig` != "" ]]; then
-      GRUBTYPE="isGrub2"
-    elif [[ -n `grep -w "grub-mkconfig" $GRUBDIR/$GRUBFILE` ]] || [[ `type grub-mkconfig` != "" ]]; then
-      GRUBTYPE="isGrub1"
-    elif [[ "$CurrentOS" == "CentOS" || "$CurrentOS" == "OracleLinux" ]] && [[ "$CurrentOSVer" -le "6" ]]; then
-      GRUBTYPE="isGrub1"
-    fi
-  fi
-}
+
 
 function getGrub(){
   Boot="${1:-/boot}"
