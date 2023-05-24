@@ -252,7 +252,7 @@ function diskType(){
   echo `udevadm info --query all "$1" 2>/dev/null |grep 'ID_PART_TABLE_TYPE' |cut -d'=' -f2`
 }
 
-function checkGrub() {
+function getGrub() {
   GRUBDIR=""
   GRUBFILE=""
   for Count in "$1" "$2" "$3"; do
