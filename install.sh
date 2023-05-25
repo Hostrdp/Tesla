@@ -5,6 +5,7 @@
 ## Default root password: MoeClub.org
 ## Blog: https://moeclub.org
 ## Written By MoeClub.org
+## Modify By Teddysun <i@teddysun.com>
 
 export tmpVER=''
 export tmpDIST=''
@@ -14,7 +15,7 @@ export tmpMirror=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='1.1.1.1 8.8.8.8'
+export ipDNS='8.8.8.8 1.1.1.1'
 export IncDisk='default'
 export interface=''
 export interfaceSelect=''
@@ -252,11 +253,9 @@ function diskType(){
   echo `udevadm info --query all "$1" 2>/dev/null |grep 'ID_PART_TABLE_TYPE' |cut -d'=' -f2`
 }
 
-
-
 function getGrub(){
   Boot="${1:-/boot}"
-  folder=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n1`
+  folder=`find "$Boot" -type d -name "grub*" 2>/dev/null | sort | tail -n1`
   [ -n "$folder" ] || return
   fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
   if [ -z "$fileName" ]; then
@@ -423,8 +422,16 @@ fi
 if [[ "$ddMode" == '1' ]]; then
   if [[ -n "$tmpURL" ]]; then
     DDURL="$tmpURL"
-    echo "$DDURL" |grep -q '^http://\|^ftp://\|^https://';
-    [[ $? -ne '0' ]] && echo 'Please input vaild URL,Only support http://, ftp:// and https:// !' && exit 1;
+    echo "$DDURL" | grep -q '^http://\|^ftp://\|^https://';
+    [[ $? -ne '0' ]] && echo 'Please input vaild URL, Only support http://, ftp:// and https:// !' && exit 1;
+    # Decompress command selection
+    if echo "$DDURL" | grep -q '.gz'; then
+        DEC_CMD="gunzip -dc"
+    elif echo "$DDURL" | grep -q '.xz'; then
+        DEC_CMD="xzcat"
+    else
+        echo 'Please input vaild URL, Only support gz or xz file!' && exit 1
+    fi
   else
     echo 'Please input vaild image URL! ';
     exit 1;
@@ -433,7 +440,7 @@ fi
 
 clear && echo -e "\n\033[36m# Install\033[0m\n"
 
-[[ "$ddMode" == '1' ]] && echo -ne "\033[34mAuto Mode\033[0m insatll \033[33mcustom image\033[0m\n[\033[33m$DDURL\033[0m]\n"
+[[ "$ddMode" == '1' ]] && echo -ne "\033[34mAuto Mode\033[0m insatll \033[33mWindows\033[0m\n[\033[33m$DDURL\033[0m]\n"
 
 if [ -z "$interfaceSelect" ]; then
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
@@ -555,7 +562,7 @@ if [[ "$loaderMode" == "0" ]]; then
   lowMem || Add_OPTION="$Add_OPTION lowmem=+0"
 
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
-    BOOT_OPTION="auto=true $Add_OPTION hostname=$linux_relese domain=$linux_relese quiet"
+    BOOT_OPTION="auto=true $Add_OPTION hostname=$linux_relese domain= quiet"
   elif [[ "$linux_relese" == 'centos' ]]; then
     BOOT_OPTION="ks=file://ks.cfg $Add_OPTION ksdevice=$interfaceSelect"
   fi
@@ -649,7 +656,7 @@ d-i clock-setup/ntp boolean false
 d-i preseed/early_command string anna-install libfuse2-udeb fuse-udeb ntfs-3g-udeb libcrypto1.1-udeb libpcre2-8-0-udeb libssl1.1-udeb libuuid1-udeb zlib1g-udeb wget-udeb
 d-i partman/early_command string [[ -n "\$(blkid -t TYPE='vfat' -o device)" ]] && umount "\$(blkid -t TYPE='vfat' -o device)"; \
 debconf-set partman-auto/disk "\$(list-devices disk |head -n1)"; \
-wget -qO- '$DDURL' |gunzip -dc |/bin/dd of=\$(list-devices disk |head -n1); \
+wget -qO- '$DDURL' | $DEC_CMD | /bin/dd of=\$(list-devices disk |head -n1); \
 mount.ntfs-3g \$(list-devices partition |head -n1) /mnt; \
 cd '/mnt/ProgramData/Microsoft/Windows/Start Menu/Programs'; \
 cd Start* || cd start*; \
@@ -792,4 +799,3 @@ else
   [[ -f "/boot/vmlinuz" ]] && rm -rf "/boot/vmlinuz"
   echo && ls -AR1 "$HOME/loader"
 fi
-
