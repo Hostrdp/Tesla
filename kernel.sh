@@ -221,7 +221,8 @@ function Start() {
   echo "  11)Template Tesla GZ"
   echo "  12)Template Tesla XZ"
   echo "  13)Template Akuma"
-  echo "  14)Template Akuma 100"
+  echo "  14)Template Akuma 50"
+  echo "  15)Template Akuma 100"
   echo "  0)Exit"
   echo -ne "\nYour option: "
   read N
@@ -248,7 +249,8 @@ function Start() {
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
     13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
-    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma100.gz' $DMIRROR ;;
+    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50.gz' $DMIRROR ;;
+    15) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma100.gz' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
