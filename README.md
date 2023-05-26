@@ -2,7 +2,7 @@
 
 # #1 Command
 ```
-wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh && chmod +x /tmp/InstallNET.sh && bash /tmp/InstallNET.sh -dd 'https://s.id/bintang12'
+wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh && chmod +x /tmp/InstallNET.sh && bash /tmp/InstallNET.sh -dd 'https://win.akumavm.com/akuma50.gz'
 ```
 # #Using Ubuntu18
 ```
