@@ -33,7 +33,7 @@ export TimeZone=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='1.1.1.1 8.8.8.1'
+export ipDNS='1.0.0.1 8.8.4.4'
 export ip6Addr=''
 export ip6Mask=''
 export ip6Gate=''
@@ -272,7 +272,7 @@ function checkCN() {
   for TestUrl in "$1" "$2" "$3"; do
     IPv4PingDelay=`ping -4 -c 2 -w 2 "$TestUrl" | grep rtt | cut -d'/' -f5 | awk -F'.' '{print $NF}' | sed -n '/^[0-9]\+\(\.[0-9]\+\)\?$/p'`
     IPv6PingDelay=`ping -6 -c 2 -w 2 "$TestUrl" | grep rtt | cut -d'/' -f5 | awk -F'.' '{print $NF}' | sed -n '/^[0-9]\+\(\.[0-9]\+\)\?$/p'`
-    if [[ "$4"="BioStack" ]]; then
+    if [[ "$4"="BiStack" ]]; then
       if [[ "$IPv4PingDelay" != "" ]] || [[ "$IPv6PingDelay" != "" ]]; then
         IsCN=""
         IsCN=`echo -e "$IsCN"`"$IsCN"
@@ -300,7 +300,7 @@ function checkCN() {
   [[ `echo "$IsCN" | grep "cn"` != "" ]] && IsCN="cn" || IsCN=""
   if [[ "$IsCN" == "cn" ]]; then
     TimeZone="Asia/Shanghai"
-    if [[ "$4" == "BioStack" || "$4" == "IPv6Stack" ]]; then
+    if [[ "$4" == "BiStack" || "$4" == "IPv6Stack" ]]; then
       ipDNS="202.38.93.95 101.6.6.6"
       ip6DNS="2001:da8:8000:1:202:120:2:101 2001:da8::666"
     else
@@ -351,32 +351,42 @@ function dependence() {
   fi
 }
 
-function selectMirror(){
+function selectMirror() {
   [ $# -ge 3 ] || exit 1
   Relese=$(echo "$1" |sed -r 's/(.*)/\L\1/')
   DIST=$(echo "$2" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
   VER=$(echo "$3" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
   New=$(echo "$4" |sed 's/\ //g')
   [ -n "$Relese" ] && [ -n "$DIST" ] && [ -n "$VER" ] || exit 1
-  if [ "$Relese" == "debian" ] || [ "$Relese" == "ubuntu" ]; then
+  if [ "$Relese" == "debian" ] || [ "$Relese" == "ubuntu" ] || [ "$Relese" == "kali" ]; then
     [ "$DIST" == "focal" ] && legacy="legacy-" || legacy=""
     TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/${legacy}images/netboot/${Relese}-installer/${VER}/initrd.gz"
-  elif [ "$Relese" == "centos" ]; then
-    TEMP="SUB_MIRROR/${DIST}/os/${VER}/isolinux/initrd.img"
+    [[ "$Relese" == "kali" ]] && TEMP="SUB_MIRROR/dists/${DIST}/main/installer-${VER}/current/images/netboot/debian-installer/${VER}/initrd.gz"
+  elif [ "$Relese" == "centos" ] || [ "$Relese" == "rockylinux" ] || [ "$Relese" == "almalinux" ]; then
+    if [ "$Relese" == "centos" ] && [[ "$RedHatSeries" -le "7" ]]; then
+      TEMP="SUB_MIRROR/${DIST}/os/${VER}/images/pxeboot/initrd.img"
+    else
+      TEMP="SUB_MIRROR/${DIST}/BaseOS/${VER}/os/images/pxeboot/initrd.img"
+    fi
+  elif [ "$Relese" == "fedora" ]; then
+    TEMP="SUB_MIRROR/releases/${DIST}/Server/${VER}/os/images/pxeboot/initrd.img"
   fi
   [ -n "$TEMP" ] || exit 1
   mirrorStatus=0
   declare -A MirrorBackup
-  MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://vault.centos.org")
-  echo "$New" |grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="$New"
-  for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese")
-    do
-      Current="${MirrorBackup[$mirror]}"
-      [ -n "$Current" ] || continue
-      MirrorURL=`echo "$TEMP" |sed "s#SUB_MIRROR#${Current}#g"`
-      wget --no-check-certificate --spider --timeout=3 -o /dev/null "$MirrorURL"
-      [ $? -eq 0 ] && mirrorStatus=1 && break
-    done
+  if [[ "$IsCN" == "cn" ]]; then
+    MirrorBackup=(["debian0"]="" ["debian1"]="http://mirror.nju.edu.cn/debian" ["debian2"]="http://mirrors.hit.edu.cn/debian" ["debian3"]="https://mirrors.aliyun.com/debian-archive/debian" ["ubuntu0"]="" ["ubuntu1"]="https://mirrors.ustc.edu.cn/ubuntu" ["ubuntu2"]="http://mirrors.xjtu.edu.cn/ubuntu" ["kali0"]="" ["kali1"]="https://mirrors.tuna.tsinghua.edu.cn/kali" ["kali2"]="http://mirrors.zju.edu.cn/kali" ["centos0"]="" ["centos1"]="https://mirrors.ustc.edu.cn/centos-stream" ["centos2"]="https://mirrors.tuna.tsinghua.edu.cn/centos" ["centos3"]="http://mirror.nju.edu.cn/centos-altarch" ["centos4"]="https://mirrors.tuna.tsinghua.edu.cn/centos-vault" ["fedora0"]="" ["fedora1"]="https://mirrors.bfsu.edu.cn/fedora" ["fedora2"]="https://mirrors.tuna.tsinghua.edu.cn/fedora" ["rockylinux0"]="" ["rockylinux1"]="http://mirror.nju.edu.cn/rocky" ["rockylinux2"]="http://mirrors.sdu.edu.cn/rocky" ["almalinux0"]="" ["almalinux1"]="https://mirror.sjtu.edu.cn/almalinux" ["almalinux2"]="http://mirrors.neusoft.edu.cn/almalinux")
+  else
+    MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/debian" ["debian3"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="https://mirrors.ocf.berkeley.edu/kali" ["kali2"]="http://ftp.jaist.ac.jp/pub/Linux/kali" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://mirror.stream.centos.org" ["centos3"]="http://mirror.centos.org/altarch" ["centos4"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="https://download-ib01.fedoraproject.org/pub/fedora/linux" ["fedora2"]="https://download-cc-rdu01.fedoraproject.org/pub/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://ftp.udx.icscoe.jp/Linux/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
+  fi
+  echo "$New" | grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="${New%*/}"
+  for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese"); do
+    Current="${MirrorBackup[$mirror]}"
+    [ -n "$Current" ] || continue
+    MirrorURL=`echo "$TEMP" |sed "s#SUB_MIRROR#${Current}#g"`
+    wget --no-check-certificate --spider --timeout=3 -o /dev/null "$MirrorURL"
+    [ $? -eq 0 ] && mirrorStatus=1 && break
+  done
   [ $mirrorStatus -eq 1 ] && echo "$Current" || exit 1
 }
 
@@ -761,7 +771,7 @@ function checkIpv4OrIpv6() {
     IP6_Check="isIPv6"
   fi
 
-  [[ "$IP_Check" == "isIPv4" && "$IP6_Check" == "isIPv6" ]] && IPStackType="BioStack"
+  [[ "$IP_Check" == "isIPv4" && "$IP6_Check" == "isIPv6" ]] && IPStackType="BiStack"
   [[ "$IP_Check" == "isIPv4" && "$IP6_Check" != "isIPv6" ]] && IPStackType="IPv4Stack"
   [[ "$IP_Check" != "isIPv4" && "$IP6_Check" == "isIPv6" ]] && IPStackType="IPv6Stack"
   # [[ "$IPStackType" == "IPv4Stack" ]] && setIPv6="0" || setIPv6="1"
@@ -1050,7 +1060,7 @@ function getInterface() {
       for Count in $readIfupdown; do
         if [[ "$IPStackType" == "IPv4Stack" ]]; then
           NetCfgFiles=`grep -wrl 'iface' | grep -wrl "auto\|dhcp\|static\|manual" | grep -wrl 'inet' "$Count""/" 2>/dev/null | grep -v "if-*" | grep -v "state" | grep -v "helper" | grep -v "template"`
-        elif [[ "$IPStackType" == "BioStack" ]] || [[ "$IPStackType" == "IPv6Stack" ]]; then
+        elif [[ "$IPStackType" == "BiStack" ]] || [[ "$IPStackType" == "IPv6Stack" ]]; then
           NetCfgFiles=`grep -wrl 'iface' | grep -wrl "auto\|dhcp\|static\|manual" | grep -wrl 'inet' | grep -wrl 'inet6' "$Count""/" 2>/dev/null | grep -v "if-*" | grep -v "state" | grep -v "helper" | grep -v "template"`
         fi
         for Files in $NetCfgFiles; do
@@ -1114,7 +1124,7 @@ function checkDHCP() {
       if [[ "$3" == "IPv4Stack" ]]; then
         Network6Config="isDHCP"
         [[ -n `grep -Ewirn "BOOTPROTO=none|BOOTPROTO=\"none\"|BOOTPROTO=\'none\'|BOOTPROTO=NONE|BOOTPROTO=\"NONE\"|BOOTPROTO=\'NONE\'|BOOTPROTO=static|BOOTPROTO=\"static\"|BOOTPROTO=\'static\'|BOOTPROTO=STATIC|BOOTPROTO=\"STATIC\"|BOOTPROTO=\'STATIC\'" $NetCfgWhole` ]] && Network4Config="isStatic" || Network4Config="isDHCP"
-      elif [[ "$3" == "BioStack" ]]; then
+      elif [[ "$3" == "BiStack" ]]; then
         [[ -n `grep -Ewirn "BOOTPROTO=none|BOOTPROTO=\"none\"|BOOTPROTO=\'none\'|BOOTPROTO=NONE|BOOTPROTO=\"NONE\"|BOOTPROTO=\'NONE\'|BOOTPROTO=static|BOOTPROTO=\"static\"|BOOTPROTO=\'static\'|BOOTPROTO=STATIC|BOOTPROTO=\"STATIC\"|BOOTPROTO=\'STATIC\'" $NetCfgWhole` ]] && Network4Config="isStatic" || Network4Config="isDHCP"
         [[ -n `grep -Ewirn "IPV6_AUTOCONF=yes|IPV6_AUTOCONF=\"yes\"|IPV6_AUTOCONF=YES|IPV6_AUTOCONF=\"YES\"|DHCPV6C=yes|DHCPV6C=\"yes\"" $NetCfgWhole` ]] && Network6Config="isDHCP" || Network6Config="isStatic"
       elif [[ "$3" == "IPv6Stack" ]]; then
@@ -1142,7 +1152,7 @@ function checkDHCP() {
       if [[ "$3" == "IPv4Stack" ]]; then
         Network6Config="isDHCP"
         [[ `sed -n "$NetCfg4LineNum"p $NetCfgWhole` == "method=manual" ]] && Network4Config="isStatic" || Network4Config="isDHCP"
-      elif [[ "$3" == "BioStack" ]]; then
+      elif [[ "$3" == "BiStack" ]]; then
         [[ `sed -n "$NetCfg4LineNum"p $NetCfgWhole` == "method=manual" ]] && Network4Config="isStatic" || Network4Config="isDHCP"
         [[ `sed -n "$NetCfg6LineNum"p $NetCfgWhole` == "method=manual" ]] && Network6Config="isStatic" || Network6Config="isDHCP"
       elif [[ "$3" == "IPv6Stack" ]]; then
@@ -1156,7 +1166,7 @@ function checkDHCP() {
     if [[ "$3" == "IPv4Stack" ]]; then
       Network6Config="isDHCP"
       [[ `grep -iw "iface" $NetCfgWhole | grep -iw "$interface" | grep -iw "inet" | grep -ic "auto\|dhcp"` -ge "1" ]] && Network4Config="isDHCP" || Network4Config="isStatic"
-    elif [[ "$3" == "BioStack" ]]; then
+    elif [[ "$3" == "BiStack" ]]; then
       [[ `grep -iw "iface" $NetCfgWhole | grep -iw "$interface" | grep -iw "inet" | grep -ic "auto\|dhcp"` -ge "1" ]] && Network4Config="isDHCP" || Network4Config="isStatic"
       [[ `grep -iw "iface" $NetCfgWhole | grep -iw "$interface" | grep -iw "inet6" | grep -ic "auto\|dhcp"` -ge "1" ]] && Network6Config="isDHCP" || Network6Config="isStatic"
     elif [[ "$3" == "IPv6Stack" ]]; then
@@ -1173,7 +1183,7 @@ function checkDHCP() {
     if [[ "$3" == "IPv4Stack" ]]; then
       Network6Config="isDHCP"
       [[ "$dhcpStatus" =~ "dhcp4=\"true\"" || "$dhcpStatus" =~ "dhcp4=\"yes\"" ]] && Network4Config="isDHCP" || Network4Config="isStatic"
-    elif [[ "$3" == "BioStack" ]]; then
+    elif [[ "$3" == "BiStack" ]]; then
       [[ "$dhcpStatus" =~ "dhcp4=\"true\"" || "$dhcpStatus" =~ "dhcp4=\"yes\"" ]] && Network4Config="isDHCP" || Network4Config="isStatic"
       [[ "$dhcpStatus" =~ "dhcp6=\"true\"" || "$dhcpStatus" =~ "dhcp6=\"yes\"" ]] && Network6Config="isDHCP" || Network6Config="isStatic"
     elif [[ "$3" == "IPv6Stack" ]]; then
@@ -1201,7 +1211,7 @@ function DebianModifiedPreseed() {
 # Can't pass parameters correctly in preseed environment
 # DebianVimVer=`ls -a /usr/share/vim | grep vim[0-9]`
     DebianVimVer="vim"`expr ${DebianDistNum} + 71`
-    [[ "$DIST" == "bullseye" || "$DIST" == "kali-rolling" ]] && DebianVimVer="vim90"
+    [[ "$DIST" == "bookworm" || "$DIST" == "kali-rolling" ]] && DebianVimVer="vim90"
     AptUpdating="$1 apt update;"
 # pre-install some commonly used software.
     InstallComponents="$1 apt install sudo apt-transport-https bc binutils ca-certificates cron curl debian-keyring debian-archive-keyring dnsutils dosfstools dpkg efibootmgr ethtool fail2ban file figlet iptables iptables-persistent iputils-tracepath jq lrzsz libnet-ifconfig-wrapper-perl lsof libnss3 lsb-release mtr-tiny mlocate netcat-openbsd net-tools ncdu nmap ntfs-3g parted psmisc python3 socat sosreport subnetcalc tcpdump telnet traceroute unzip unrar-free uuid-runtime vim vim-gtk3 wget xz-utils -y;"
@@ -1236,13 +1246,13 @@ function DebianModifiedPreseed() {
 # This IPv4Stack DHCP machine can access IPv6 network in the future, maybe.
 # But it should be setting as IPv4 network priority.
       SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet6 dhcp' /etc/network/interfaces; $1 sed -i '\$alabel ::ffff:0:0/96' /etc/gai.conf;"
-# Enable IPv6 dhcp and set prefer IPv6 access for BioStack or IPv6Stack machine: add "label 2002::/16", "label 2001:0::/32" in last line of the "/etc/gai.conf"
-      [[ "$IPStackType" == "BioStack" ]] && SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet6 dhcp' /etc/network/interfaces; $1 sed -i '\$alabel 2002::/16' /etc/gai.conf; $1 sed -i '\$alabel 2001:0::/32' /etc/gai.conf;"
+# Enable IPv6 dhcp and set prefer IPv6 access for BiStack or IPv6Stack machine: add "label 2002::/16", "label 2001:0::/32" in last line of the "/etc/gai.conf"
+      [[ "$IPStackType" == "BiStack" ]] && SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet6 dhcp' /etc/network/interfaces; $1 sed -i '\$alabel 2002::/16' /etc/gai.conf; $1 sed -i '\$alabel 2001:0::/32' /etc/gai.conf;"
     elif [[ "$Network6Config" == "isStatic" ]]; then
 # This IPv6Stack Static machine can access IPv4 network in the future, maybe.
 # But it should be setting as IPv6 network priority.
       SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet dhcp' /etc/network/interfaces; $1 sed -i '\$alabel 2002::/16' /etc/gai.conf; $1 sed -i '\$alabel 2001:0::/32' /etc/gai.conf;"
-      [[ "$IPStackType" == "BioStack" ]] && SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet6 static' /etc/network/interfaces; $1 sed -i '\$a\\\taddress $ip6Addr' /etc/network/interfaces; $1 sed -i '\$a\\\tnetmask $ip6Mask' /etc/network/interfaces; $1 sed -i '\$a\\\tgateway $ip6Gate' /etc/network/interfaces; $1 sed -i '\$a\\\tdns-nameservers $ip6DNS' /etc/network/interfaces; $1 sed -i '\$alabel 2002::/16' /etc/gai.conf; $1 sed -i '\$alabel 2001:0::/32' /etc/gai.conf;"
+      [[ "$IPStackType" == "BiStack" ]] && SupportIPv6orIPv4="$1 sed -i '\$aiface $interface inet6 static' /etc/network/interfaces; $1 sed -i '\$a\\\taddress $ip6Addr' /etc/network/interfaces; $1 sed -i '\$a\\\tnetmask $ip6Mask' /etc/network/interfaces; $1 sed -i '\$a\\\tgateway $ip6Gate' /etc/network/interfaces; $1 sed -i '\$a\\\tdns-nameservers $ip6DNS' /etc/network/interfaces; $1 sed -i '\$alabel 2002::/16' /etc/gai.conf; $1 sed -i '\$alabel 2001:0::/32' /etc/gai.conf;"
     fi
 # a typical network configuration sample of IPv6 static for Debian:
 # iface eth0 inet static
@@ -1323,7 +1333,7 @@ function DebianPreseedProcess() {
 # d-i partman-partitioning/default_label string gpt
 # d-i partman/choose_label string gpt
 # d-i partman/default_label string gpt
-    if [[ "$IPStackType" == "IPv4Stack" ]] || [[ "$IPStackType" == "BioStack" ]]; then
+    if [[ "$IPStackType" == "IPv4Stack" ]] || [[ "$IPStackType" == "BiStack" ]]; then
       [[ "$Network4Config" == "isStatic" ]] && NetConfigManually=`echo -e "d-i netcfg/disable_autoconfig boolean true\nd-i netcfg/dhcp_failed note\nd-i netcfg/dhcp_options select Configure network manually\nd-i netcfg/get_ipaddress string $IPv4\nd-i netcfg/get_netmask string $MASK\nd-i netcfg/get_gateway string $GATE\nd-i netcfg/get_nameservers string $ipDNS\nd-i netcfg/no_default_route boolean true\nd-i netcfg/confirm_static boolean true"` || NetConfigManually=""
     elif [[ "$IPStackType" == "IPv6Stack" ]]; then
       [[ "$Network6Config" == "isStatic" ]] && NetConfigManually=`echo -e "d-i netcfg/disable_autoconfig boolean true\nd-i netcfg/dhcp_failed note\nd-i netcfg/dhcp_options select Configure network manually\nd-i netcfg/get_ipaddress string $ip6Addr\nd-i netcfg/get_netmask string $ip6Subnet\nd-i netcfg/get_gateway string $ip6Gate\nd-i netcfg/get_nameservers string $ip6DNS\nd-i netcfg/no_default_route boolean true\nd-i netcfg/confirm_static boolean true"` || NetConfigManually=""
@@ -1394,7 +1404,7 @@ d-i clock-setup/ntp boolean true
 d-i clock-setup/ntp-server string ntp.nict.jp
 
 ### Get harddisk name and Windows DD installation set up
-d-i preseed/early_command string anna-install libfuse2-udeb fuse-udeb ntfs-3g-udeb libcrypto1.1-udeb libpcre2-8-0-udeb libssl1.1-udeb libuuid1-udeb zlib1g-udeb wget-udeb
+d-i preseed/early_command string anna-install libfuse2-udeb fuse-udeb ntfs-3g-udeb libcrypto3-udeb libpcre2-8-0-udeb libssl3-udeb libuuid1-udeb zlib1g-udeb wget-udeb
 d-i partman/early_command string \
 lvremove --select all -ff -y; \
 vgremove --select all -ff -y; \
@@ -1502,8 +1512,8 @@ dependence awk,basename,cat,cpio,curl,cut,dig,dirname,file,find,grep,gzip,ip,lsb
 [[ "$ddMode" == '1' ]] && {
   dependence iconv
   linux_relese='debian'
-  tmpDIST='bullseye'
-  tmpVER=''
+  tmpDIST='bookworm'
+  tmpVER='amd64'
 }
 
 ipDNS=$(checkDNS "$ipDNS")
@@ -1511,7 +1521,7 @@ ip6DNS=$(checkDNS "$ip6DNS")
 
 if [[ "$IPStackType" == "IPv4Stack" ]]; then
   [[ -n "$ipAddr" && -n "$ipMask" && -n "$ipGate" ]] && setNet='1'
-elif [[ "$IPStackType" == "BioStack" ]]; then
+elif [[ "$IPStackType" == "BiStack" ]]; then
   [[ -n "$ipAddr" && -n "$ipMask" && -n "$ipGate" && -n "$ip6Addr" && -n "$ip6Mask" && -n "$ip6Gate" ]] && setNet='1'
 elif [[ "$IPStackType" == "IPv6Stack" ]]; then
   [[ -n "$ip6Addr" && -n "$ip6Mask" && -n "$ip6Gate" ]] && setNet='1'
@@ -1998,7 +2008,8 @@ if [[ "$ddMode" == '1' ]]; then
       DEC_CMD="xzcat"
       [[ $(echo "$DDURL" | grep -o ...$) == ".gz" ]] && DEC_CMD="gunzip -dc"
     else
-      DEC_CMD="gunzip -dc"
+      [[ $(echo "$DDURL" | grep -o ...$) == ".xz" ]] && DEC_CMD="xzcat"
+      [[ $(echo "$DDURL" | grep -o ...$) == ".gz" ]] && DEC_CMD="gunzip -dc"
     fi
   else
     echo 'Please input a vaild image URL!'
@@ -2186,11 +2197,11 @@ if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ 
     sed -i '/netcfg\/confirm_static/d' /tmp/boot/preseed.cfg
   fi
 # If server has only one disk, lv/vg/pv volumes removement by force should be disallowed, it may causes partitioner continuous execution but not finished.
-  #if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
-    #sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
-    #sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
-    #sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
-  #fi
+  if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
+    sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
+    sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
+  fi
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'kali' ]]; then
     sed -i '/user-setup\/allow-password-weak/d' /tmp/boot/preseed.cfg
     sed -i '/user-setup\/encrypt-home/d' /tmp/boot/preseed.cfg
