@@ -226,6 +226,7 @@ function Start() {
   echo "  16)Win 10 LTSC Teddysun"
   echo "  17)Win 11 Pro Teddysun"
   echo "  18)Windows Server 2022 DC"
+  echo "  19)Akuma 50 v2"
   echo "  0)Exit"
   echo -ne "\nYour option: "
   read N
@@ -257,6 +258,7 @@ function Start() {
     16) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
     17) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
     18) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
+    19) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50v2.xz' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
