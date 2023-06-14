@@ -23,7 +23,7 @@ function CopyRight() {
   echo "#  Auto Reinstall Script                               #"
   echo "#                                                      #"
   echo "#  Author: Adhwa Digital & hiCasper                    #"
-  echo "#  Last Modified: 19-05-2023                           #"
+  echo "#  Last Modified: 14-06-2023                           #"
   echo "#                                                      #"
   echo "#  Supported by MoeClub                                #"
   echo "#                                                      #"
@@ -190,10 +190,10 @@ function Start() {
     rm -f /tmp/InstallNET.sh
   fi
   #curl -sSL -o /tmp/InstallNET.sh 'https://fastly.jsdelivr.net/gh/hiCasper/Shell@latest/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/install.sh' && chmod a+x /tmp/InstallNET.sh
+  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/install.sh' && chmod a+x /tmp/InstallNET.sh
   #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
   #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/fcurrk/reinstall/master/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
+  #curl -sSL -o /tmp/InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
 
   CMIRROR=''
   CVMIRROR=''
@@ -209,39 +209,46 @@ function Start() {
   sed -i 's/$1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0/$1$7R4IuxQb$J8gcq7u9K0fNSsDNFEfr90/' /tmp/InstallNET.sh
 
   echo -e "\nPlease select an OS:"
-  echo "  1) CentOS 7.8 (DD Image)"
-  echo "  2) CentOS 7.6 (DD Image, ServerSpeeder Avaliable)"
-  echo -e "  3) Rocky Linux 8.6 (\033[31mExperimental, NOT SUPPORT LSI/BusLogic disk controller\033[0m)"
-  echo "  4) Debian 10"
-  echo "  5) Debian 11"
-  echo "  6) Ubuntu 16.04"
-  echo "  7) Ubuntu 18.04"
-  echo "  8) Ubuntu 20.04"
-  echo "  9) Custom image"
-  echo "  10)Template Bintang GZ"
-  echo "  11)Template Tesla GZ"
-  echo "  12)Template Tesla XZ"
-  echo "  13)Template Akuma"
-  echo "  14)Template Akuma 50"
-  echo "  15)Template Akuma 100"
-  echo "  16)Win 10 LTSC Teddysun"
-  echo "  17)Win 11 Pro Teddysun"
-  echo "  18)Windows Server 2019 DC"
-  echo "  19)Windows Server 2022 DC"
-  echo "  20)Akuma 50 v2"
+  echo "  1) Debian 10"
+  echo "  2) Debian 11"
+  echo "  3) Ubuntu 18.04"
+  echo "  4) Ubuntu 20.04"
+  echo "  5)Template Bintang GZ"
+  echo "  6)Template Tesla GZ"
+  echo "  7)Template Tesla XZ"
+  echo "  8)Template Akuma"
+  echo "  9)Template Akuma 50"
+  echo "  10)Template Akuma 100"
+  echo "  11)Win 10 LTSC Teddysun"
+  echo "  12)Win 11 Pro Teddysun"
+  echo "  13)Windows Server 2012 DC Adhwa Digital"
+  echo "  14)Windows Server 2016 DC Adhwa Digital"
+  echo "  15)Windows Server 2019 DC Teddysun"
+  echo "  16)Windows Server 2022 DC Teddysun"
+  echo "  17)Akuma 50 v2"
+  echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
   read N
   case $N in
-    1) echo -e "\nPassword: Pwd@CentOS\n"; RHELImageBootConf; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh $NETSTR -dd 'https://api.moetools.net/get/centos-78-image' $DMIRROR ;;
-    2) echo -e "\nPassword: Pwd@CentOS\n"; RHELImageBootConf; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh $NETSTR -dd 'https://api.moetools.net/get/centos-76-image' $DMIRROR ;;
-    3) echo -e "\nPassword: Pwd@Linux\n"; RHELImageBootConf; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh $NETSTR -dd 'https://api.moetools.net/get/rocky-8-image' $DMIRROR ;;
-    4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 10 -v 64 -a $NETSTR $DMIRROR ;;
-    5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 11 -v 64 -a $NETSTR $DMIRROR ;;
-    6) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 16.04 -v 64 -a $NETSTR $UMIRROR ;;
-    7) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 18.04 -v 64 -a $NETSTR $UMIRROR ;;
-    8) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
-    9)
+    1) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 10 -v 64 -a $NETSTR $DMIRROR ;;
+    2) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 11 -v 64 -a $NETSTR $DMIRROR ;;
+    3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 18.04 -v 64 -a $NETSTR $UMIRROR ;;
+    4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
+    5) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
+    6) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
+    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
+    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
+    9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50.gz' $DMIRROR ;;
+    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma100.gz' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
+    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/Win2k12dc' $DMIRROR ;;
+    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/Win2k16dc' $DMIRROR ;;
+    15) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
+    16) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
+    17) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50v2.xz' $DMIRROR ;;
+    99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
       echo -e "\n"
@@ -251,17 +258,6 @@ function Start() {
         *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
-    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/bintang12' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/teslagz' $DMIRROR ;;
-    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/tesla12' -filetype xz $DMIRROR ;;
-    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/akuma1' $DMIRROR ;;
-    14) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50.gz' $DMIRROR ;;
-    15) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma100.gz' $DMIRROR ;;
-    16) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
-    17) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
-    18) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
-    19) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    20) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50v2.xz' $DMIRROR ;;
     0) exit 0;;
     *) echo "Wrong input!"; exit 1;;
   esac
