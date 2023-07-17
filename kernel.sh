@@ -221,7 +221,7 @@ function Start() {
   echo "  10)Windows Server 2022 DC Teddysun"
   echo "  11)Akuma 50 v2"
   echo "  12)Tesla Loops"
-  echo "  12)Tesla PRO Login"
+  echo "  13)Tesla PRO Login"
   echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
