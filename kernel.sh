@@ -239,7 +239,7 @@ function Start() {
     10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50v2.xz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/teslaloops.gz' $DMIRROR ;;
-    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/teslapro.gz' $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/teslapro.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
