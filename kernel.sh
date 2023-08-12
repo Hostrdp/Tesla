@@ -23,7 +23,7 @@ function CopyRight() {
   echo "#  Auto Reinstall Script                               #"
   echo "#                                                      #"
   echo "#  Author: Adhwa Digital, hiCasper & Leitbogioro       #"
-  echo "#  Last Modified: 17-07-2023                           #"
+  echo "#  Last Modified: 12-08-2023                           #"
   echo "#                                                      #"
   echo "#  Supported by MoeClub                                #"
   echo "#                                                      #"
@@ -215,13 +215,11 @@ function Start() {
   echo "  4) Ubuntu 20.04"
   echo "  5)Win 10 LTSC Teddysun"
   echo "  6)Win 11 Pro Teddysun"
-  echo "  7)Windows Server 2012 DC Adhwa Digital"
-  echo "  8)Windows Server 2016 DC Adhwa Digital"
+  echo "  7)Windows Server 2012 DC Teddysun"
+  echo "  8)Windows Server 2016 DC Teddysun"
   echo "  9)Windows Server 2019 DC Teddysun"
   echo "  10)Windows Server 2022 DC Teddysun"
-  echo "  11)Akuma 50 v2"
-  echo "  12)Tesla Loops"
-  echo "  13)Tesla PRO Login"
+  echo "  11)Akuma 2012"
   echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
@@ -233,13 +231,11 @@ function Start() {
     4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
     5) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
     6) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
-    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/Win2k12dc' $DMIRROR ;;
-    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://s.id/Win2k16dc' $DMIRROR ;;
+    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
+    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
     9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
     10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma50v2.xz' $DMIRROR ;;
-    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/teslaloops.gz' $DMIRROR ;;
-    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/teslapro.xz' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
