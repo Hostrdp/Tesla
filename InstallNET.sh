@@ -13,6 +13,7 @@
 ## Blog: https://github.com/airium
 ## Modified By Leitbogioro
 ## Blog: https://www.zhihu.com/column/originaltechnic
+## Modified By Adhwa Digital
 
 # color
 underLine='\033[4m'
@@ -33,11 +34,11 @@ export TimeZone=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='1.0.0.1 8.8.4.4'
+export ipDNS='1.1.1.1 8.8.8.8'
 export ip6Addr=''
 export ip6Mask=''
 export ip6Gate=''
-export ip6DNS='2606:4700:4700::1001 2001:4860:4860::8844'
+export ip6DNS='2606:4700:4700::1111 2001:4860:4860::8888'
 export IncDisk='default'
 export interface=''
 export interfaceSelect=''
