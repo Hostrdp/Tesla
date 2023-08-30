@@ -213,14 +213,15 @@ function Start() {
   echo "  2) Debian 11"
   echo "  3) Ubuntu 18.04"
   echo "  4) Ubuntu 20.04"
-  echo "  5) Win 10 LTSC Teddysun"
-  echo "  6) Win 11 Pro Teddysun"
-  echo "  7) Windows Server 2012 DC Teddysun"
-  echo "  8) Windows Server 2016 DC Teddysun"
-  echo "  9) Windows Server 2019 DC Teddysun"
-  echo "  10) Windows Server 2022 DC Teddysun"
-  echo "  11) Akuma 2012"
-  echo "  12) Akuma 2012 v2"
+  echo "  5) CentOS 7.9"
+  echo "  6) Win 10 LTSC Teddysun"
+  echo "  7) Win 11 Pro Teddysun"
+  echo "  8) Windows Server 2012 DC Teddysun"
+  echo "  9) Windows Server 2016 DC Teddysun"
+  echo "  10) Windows Server 2019 DC Teddysun"
+  echo "  11) Windows Server 2022 DC Teddysun"
+  echo "  12) Akuma 2012"
+  echo "  13) Akuma 2012 v2"
   echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
@@ -230,14 +231,15 @@ function Start() {
     2) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 11 -v 64 -a $NETSTR $DMIRROR ;;
     3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 18.04 -v 64 -a $NETSTR $UMIRROR ;;
     4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
-    5) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
-    6) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
-    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
-    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
-    9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
-    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012.xz' $DMIRROR ;;
-    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012v2.gz' $DMIRROR ;;
+    5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -c 7.9 -v 64 -a $NETSTR $CMIRROR ;;
+    6) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
+    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
+    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
+    9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
+    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
+    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012.xz' $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012v2.gz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
