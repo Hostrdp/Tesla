@@ -221,7 +221,6 @@ function Start() {
   echo "  10) Windows Server 2019 DC Teddysun"
   echo "  11) Windows Server 2022 DC Teddysun"
   echo "  12) Akuma 2012"
-  echo "  13) Akuma 2012 v2"
   echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
@@ -238,8 +237,7 @@ function Start() {
     9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
     10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
     11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    12) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012.xz' $DMIRROR ;;
-    13) bash /tmp/InstallNET.sh $NETSTR -dd 'https://win.akumavm.com/akuma2012v2.gz' $DMIRROR ;;
+    12) bash /tmp/InstallNET.sh $NETSTR -dd 'http://109.205.214.11/AKUMA2012.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
