@@ -2,11 +2,11 @@
 
 # #1 Command
 ```
-apt install -y screen && wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh && chmod +x /tmp/InstallNET.sh && screen -S asd bash /tmp/InstallNET.sh -dd 'https://win.akumavm.com/akuma2012.xz'
+apt install -y screen && wget --no-check-certificate -qO /tmp/InstallNET.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/InstallNET.sh && chmod +x /tmp/InstallNET.sh && screen -S asd bash /tmp/InstallNET.sh -dd 'https://win.akumavm.com/AKUMA2012.xz'
 ```
 # #Using Ubuntu18
 ```
-wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc.sh | bash -s - -t https://win.akumavm.com/teslapro.xz
+wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc.sh | bash -s - -t https://win.akumavm.com/AKUMA2012.xz
 ```
 
 # #Via Kernel Installation
