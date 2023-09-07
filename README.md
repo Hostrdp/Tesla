@@ -6,7 +6,7 @@ apt install -y screen && wget --no-check-certificate -qO /tmp/InstallNET.sh http
 ```
 # #Using Ubuntu18
 ```
-wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc.sh | bash -s - -t https://win.akumavm.com/AKUMA2012.xz
+wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc2.sh | bash -s - -t https://win.akumavm.com/AKUMA2012.xz
 ```
 
 # #Via Kernel Installation
