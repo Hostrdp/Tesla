@@ -2272,7 +2272,7 @@ if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ 
     sed -i '/anna-install/d' /tmp/boot/preseed.cfg
     sed -i 's/wget.*\/sbin\/reboot\;\ //g' /tmp/boot/preseed.cfg
   }
-elif [[ "$linux_relese" == 'centos' ]] || [[ "$linux_relese" == 'rockylinux' ]] || [[ "$linux_relese" == 'almalinux' ]] || [[ "$linux_relese" == 'fedora' ]]; then
+#elif [[ "$linux_relese" == 'centos' ]] || [[ "$linux_relese" == 'rockylinux' ]] || [[ "$linux_relese" == 'almalinux' ]] || [[ "$linux_relese" == 'fedora' ]]; then
   RedHatUrl=""
   RepoBase=""
   RepoAppStream=""
@@ -2290,24 +2290,24 @@ elif [[ "$linux_relese" == 'centos' ]] || [[ "$linux_relese" == 'rockylinux' ]] 
       else
         RepoEpel="repo --name=epel --baseurl=https://archives.fedoraproject.org/pub/epel/$RedHatSeries/Everything/${VER}/"
       fi
-    elif [[ "$linux_relese" == 'centos' ]] && [[ "$RedHatSeries" -le "7" ]]; then
+    #elif [[ "$linux_relese" == 'centos' ]] && [[ "$RedHatSeries" -le "7" ]]; then
       RedHatUrl="${LinuxMirror}/${DIST}/os/${VER}/"
       AuthMethod="auth --useshadow --passalgo=sha512"
       SetTimeZone="timezone --isUtc ${TimeZone}"
       RepoBase="repo --name=base --baseurl=${LinuxMirror}/${DIST}/os/${VER}/"
       RepoAppStream="repo --name=updates --baseurl=${LinuxMirror}/${DIST}/updates/${VER}/"
       [[ "$IsCN" == "cn" ]] && FirewallRule="https://gitee.com/mb9e8j2/Tools/raw/master/Linux_reinstall/RedHat/RHEL7Public.xml" || FirewallRule="https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/RedHat/RHEL7Public.xml"
-      if [[ "$IsCN" == "cn" ]]; then
+      #if [[ "$IsCN" == "cn" ]]; then
         RepoEpel="repo --name=epel --baseurl=http://mirror.nju.edu.cn/epel/$RedHatSeries/${VER}/"
-      else
+     # else
         RepoEpel="repo --name=epel --baseurl=https://archives.fedoraproject.org/pub/archive/epel/$RedHatSeries/${VER}/"
-      fi
-    fi
-  elif [[ "$linux_relese" == 'fedora' ]]; then
+     # fi
+    #fi
+  #elif [[ "$linux_relese" == 'fedora' ]]; then
     RedHatUrl="${LinuxMirror}/releases/${DIST}/Server/${VER}/os/"
     RepoBase="repo --name=base --baseurl=${LinuxMirror}/releases/${DIST}/Server/${VER}/os/"
     RepoEpel="repo --name=epel --baseurl=${LinuxMirror}/releases/${DIST}/Everything/${VER}/os/"
-  fi
+  #fi
 # If network adapter is redirected, the "eth0" is default.
 # --bootproto="xx" is for IPv4, --bootproto=dhcp is IPv4 DHCP, --bootproto=static is IPv4 Static. 
 # --ipv6="a vaild IPv6 address" is IPv6 Static, --ipv6=auto is IPv6 DHCP.
