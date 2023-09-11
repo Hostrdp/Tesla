@@ -1775,12 +1775,13 @@ echo "$TimeZone"
 echo -ne "\n${aoiBlue}# SSH Port${plain}\n\n"
 echo "$sshPORT"
 
-getDisk
-tempDisk=`getDisk`
-[ -n "$tempDisk" ] && IncDisk="$tempDisk"
-[[ "$setRaid" == "0" ]] && IncDisk="/dev/sda"
-echo -ne "\n${aoiBlue}# Installing Disks${plain}\n\n"
-echo "$AllDisks"
+setDisk=$(echo "$setDisk" | sed 's/[A-Z]/\l&/g')
+getDisk "$setDisk" "$linux_relese"
+echo -ne "\n${aoiBlue}# Installing and Formatting Disks${plain}\n\n"
+[[ "$setDisk" == "all" || -n "$setRaid" ]] && echo "$AllDisks" || echo "$IncDisk"
+
+echo -ne "\n${aoiBlue}# Motherboard Firmware${plain}\n\n"
+[[ "$EfiSupport" == "enabled" ]] && echo "UEFI" || echo "BIOS"
 
 # Get architecture of current os automatically
 ArchName=`uname -m`
@@ -2198,23 +2199,18 @@ if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]] || [[ 
     sed -i '/netcfg\/confirm_static/d' /tmp/boot/preseed.cfg
   fi
 # If server has only one disk, lv/vg/pv volumes removement by force should be disallowed, it may causes partitioner continuous execution but not finished.
-  if [[ "$disksNum" -le "1" || "$setDisk" != "all" ]]; then
+  if [[ "$disksNum" -le "1" || "$setDisk" != "all" || -n "$setRaid" ]]; then
     sed -i 's/lvremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
     sed -i 's/vgremove --select all -ff -y;//g' /tmp/boot/preseed.cfg
     sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
+  elif [[ "$disksNum" -ge "2" && "$setDisk" == "all" ]]; then
+# Some virtual machines will hanging on partition step if execute pvremove.
+    [[ -z "$virtWhat" ]] || sed -i 's/pvremove \/dev\/\* -ff -y;//g' /tmp/boot/preseed.cfg
   fi
-  if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'kali' ]]; then
-    sed -i '/user-setup\/allow-password-weak/d' /tmp/boot/preseed.cfg
-    sed -i '/user-setup\/encrypt-home/d' /tmp/boot/preseed.cfg
-    sed -i '/pkgsel\/update-policy/d' /tmp/boot/preseed.cfg
-    sed -i 's/umount\ \/media.*true\;\ //g' /tmp/boot/preseed.cfg
-    [[ -f '/tmp/firmware.cpio.gz' ]] && gzip -d < /tmp/firmware.cpio.gz | cpio --extract --verbose --make-directories --no-absolute-filenames >>/dev/null 2>&1
-# Uncompressed hardware drivers size of Kali firmware non-free such as "firmware-nonfree_20230210.orig.tar.xz" is almost 800MB,
-# if the physical memory of server is below 3GB, I suggested that not load parameter "-firmware".
-    [[ -f '/tmp/kali_firmware.tar.xz' ]] && {
-      tar -Jxvf '/tmp/kali_firmware.tar.xz' -C /tmp/
-      mv /tmp/$decompressedKaliFirmwareDir/* '/tmp/boot/lib/firmware/'
-    }
+  if [[ "$disksNum" -ge "2" ]] && [[ -n "$setRaid" ]]; then
+    sed -i 's/d-i partman\/early_command.*//g' /tmp/boot/preseed.cfg
+    sed -ri "/d-i grub-installer\/bootdev.*/c\d-i grub-installer\/bootdev string $AllDisks" /tmp/boot/preseed.cfg
+  fi
 # Debian 8 and former or Raid 0 mode don't support xfs.
     [[ "$DebianDistNum" -le "8" || "$setRaid" == "0" ]] && sed -i '/d-i\ partman\/default_filesystem string xfs/d' /tmp/boot/preseed.cfg
   fi
