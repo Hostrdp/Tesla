@@ -13,8 +13,9 @@ gen64() {
 }
 install_3proxy() {
     echo "installing 3proxy"
-    URL="https://raw.githubusercontent.com/quayvlog/quayvlog/main/3proxy-3proxy-0.8.6.tar.gz"
-    wget -qO- $URL | tar -xvzf
+    #URL="https://raw.githubusercontent.com/quayvlog/quayvlog/main/3proxy-3proxy-0.8.6.tar.gz"
+    wget -qO- "https://raw.githubusercontent.com/quayvlog/quayvlog/main/3proxy-3proxy-0.8.6.tar.gz" | tar -xvzf
+    #wget -qO- $URL | tar -xvzf
     cd 3proxy-3proxy-0.8.6
     make -f Makefile.Linux
     mkdir -p /usr/local/etc/3proxy/bin
