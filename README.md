@@ -16,6 +16,10 @@ wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/ddsc2.sh | bash -
 ```
 wget --no-check-certificate -qO kernel.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/kernel.sh && chmod +x kernel.sh && bash kernel.sh
 ```
+# #Via Kernel v2 Installation
+```
+wget --no-check-certificate -qO kernelv2.sh https://raw.githubusercontent.com/Hostrdp/Tesla/main/kernelv2.sh && chmod +x kernelv2.sh && bash kernelv2.sh
+```
 # If error grub.cfg!
 ```
 mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg && update-grub2
