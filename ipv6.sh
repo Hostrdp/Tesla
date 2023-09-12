@@ -11,18 +11,11 @@ gen64() {
 	}
 	echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
-
-echo ">-- Updating packages and installing dependencies"
-apt-get update >/dev/null>
-apt-get -y install wget curl nano build-essential gcc g++ make bc pwgen git >/dev/null>
-
 install_3proxy() {
     echo "installing 3proxy"
-    wget -q https://github.com/z3APA3A/3proxy/archive/0.8.13.tar.gz
-    tar xzf 0.8.13.tar.gz
-    mv ~/3proxy-0.8.13 ~/3proxy
-    rm 0.8.13.tar.gz
-    cd ~/3proxy
+    URL="https://raw.githubusercontent.com/quayvlog/quayvlog/main/3proxy-3proxy-0.8.6.tar.gz"
+    wget -qO- $URL | bsdtar -xvf-
+    cd 3proxy-3proxy-0.8.6
     make -f Makefile.Linux
     mkdir -p /usr/local/etc/3proxy/bin
     mkdir -p /usr/local/etc/3proxy/logs
@@ -30,8 +23,7 @@ install_3proxy() {
     cp src/3proxy /usr/local/etc/3proxy/bin/
     cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy
     chmod +x /etc/init.d/3proxy
-    update-rc.d 3proxy on
-    #chkconfig 3proxy on
+    chkconfig 3proxy on
     cd $WORKDIR
 }
 
@@ -88,6 +80,10 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig eth0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
+echo "installing apps"
+yum -y install gcc net-tools bsdtar zip >/dev/null
+
+install_3proxy
 
 echo "working folder = /home/proxy-installer"
 WORKDIR="/home/proxy-installer"
