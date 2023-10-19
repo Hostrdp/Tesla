@@ -1024,21 +1024,16 @@ function checkConsole() {
 	done
 	if [[ "$1" == "aarch64" || "$1" == "arm64" ]]; then
 		[[ ! "$ttyConsole" =~ "ttyS" ]] && {
-			if [[ "$ttyConsole" =~ "tty[0-9]" ]]; then
+			if [[ $(echo "$ttyConsole" | grep "tty[0-9]") ]]; then
 				ttyConsole="${ttyConsole} console=ttyS0 "
 			else
 				ttyConsole="${ttyConsole} console=tty1 console=ttyS0 "
 			fi
 		}
 	fi
-	ttyConsole=$(echo "$ttyConsole" | sed 's/.$//' | sed 's/tty0/tty1/g')
-	if [[ "$ttyConsole" =~ "ttyS" ]]; then
-		serialConsolePropertiesForGrub="$ttyConsole,115200n8 earlyprintk=ttyS0,115200n8 consoleblank=0"
-		[[ "$1" == "aarch64" || "$1" == "arm64" ]] && ttyConsole="$ttyConsole,115200n8" || ttyConsole=""
-	elif [[ "$ttyConsole" =~ "ttyAMA" ]]; then
-		serialConsolePropertiesForGrub="$ttyConsole"
-		[[ "$1" == "aarch64" || "$1" == "arm64" ]] && ttyConsole="$ttyConsole" || ttyConsole=""
-	fi
+	ttyConsole=$(echo "$ttyConsole" | sed 's/console=tty[0-9]/console=tty1/g' | sed 's/console=ttyAMA[0-9]/console=ttyAMA0,115200n8/g' | sed 's/console=ttyS[0-9]/console=ttyS0,115200n8/g' | sed 's/.$//')
+	[[ "$ttyConsole" =~ "ttyS" ]] && serialConsolePropertiesForGrub="$ttyConsole earlyprintk=ttyS0,115200n8 consoleblank=0"
+	[[ "$1" == "aarch64" || "$1" == "arm64" ]] || ttyConsole=""
 }
 
 # $1 is $linux_relese, $2 is $RedHatSeries, $3 is $targetRelese
@@ -1084,7 +1079,7 @@ function checkMem() {
 			if [[ "$1" == 'rockylinux' || "$1" == 'almalinux' || "$1" == 'centos' ]]; then
 				if [[ "$2" == "8" ]] || [[ "$1" == 'centos' && "$2" -ge "9" ]]; then
 					[[ "$TotalMem" -le "2228" ]] && {
-						echo -ne "\n[${red}Warning${plain}] Minimum system memory requirement is 2.2 GB for ${blue}KickStart${plain} native method."
+						echo -ne "\n[${red}Warning${plain}] Minimum system memory requirement is 2.2 GB for ${blue}KickStart${plain} native method.\n"
 						if [[ "$2" == "8" ]]; then
 							echo -ne "\nSwitching to ${yellow}Rocky $2${plain} by ${blue}Cloud Init${plain} Installation... \n"
 							lowMemMode="1"
@@ -1100,7 +1095,7 @@ function checkMem() {
 					}
 				elif [[ "$2" -ge "9" ]]; then
 					[[ "$TotalMem" -le "2028" ]] && {
-						echo -ne "\n[${red}Warning${plain}] Minimum system memory requirement is 2 GB for ${blue}Kickstart${plain} native method."
+						echo -ne "\n[${red}Warning${plain}] Minimum system memory requirement is 2 GB for ${blue}Kickstart${plain} native method.\n"
 						echo -ne "\nSwitching to ${blue}Cloud Init${plain} Installation... \n"
 						lowMemMode="1"
 					}
@@ -1145,11 +1140,23 @@ function checkMem() {
 }
 
 function checkVirt() {
+	virtWhat=""
 	virtType=""
-	for Count in $(dmidecode -s system-manufacturer | awk '{print $1}' | sed 's/[A-Z]/\l&/g') $(systemd-detect-virt | sed 's/[A-Z]/\l&/g') $(lscpu | grep -i "hypervisor vendor" | cut -d ':' -f 2 | sed 's/^[ \t]*//g' | sed 's/[A-Z]/\l&/g'); do
-		virtType+="$Count"
+	[[ -n $(virt-what) ]] && {
+		for virtItem in $(virt-what); do
+			virtWhat+="$virtItem "
+		done
+		# Does not support OpenVZ or LXC.
+		[[ $(echo $virtWhat | grep -i "openvz") || $(echo $virtWhat | grep -i "lxc") ]] && {
+			echo -ne "\n[${red}Error${plain}] Virtualization of ${yellow}$virtWhat${plain}could not be supported!\n"
+			echo -ne "\nTry to refer to the ${blue}following project${plain}: \n\n${underLine}https://github.com/LloydAsp/OsMutation${plain} \n\nfor learning more and then execute it as the re-installation.\n"
+			exit 1
+		}
+	}
+	for virtItem in $(dmidecode -s system-manufacturer | sed 's/[[:space:]]//g' | sed 's/[A-Z]/\l&/g') $(systemd-detect-virt | sed 's/[A-Z]/\l&/g') $(lscpu | grep -i "hypervisor vendor" | cut -d ':' -f 2 | sed 's/^[ \t]*//g' | sed 's/[A-Z]/\l&/g'); do
+		virtType+="$virtItem "
 	done
-	virtWhat=$(virt-what)
+	showAllVirts=$(echo "$virtType$virtWhat" | sed 's/[[:space:]]/\n/g' | sort -u | tr -s '\n' ' ' | sed 's/^[ \t]*//g' | sed 's/[ \t]*$//g')
 }
 
 function checkSys() {
@@ -2551,14 +2558,15 @@ function checkDHCP() {
 	[[ "$Network6Config" == "" ]] && Network6Config="isStatic"
 }
 
-# $1 is "$tmpDHCP", $2 is "$virtWhat".
+# $1 is "$tmpDHCP", $2 is "$virtWhat", $3 is "$virtType".
 # For GCP, network config method for netboot kernel must be static.
+# In official template of Debian 10-11, Ubuntu 20.04-22.04 of GCP, the result of "virt-what" can only be shown as "kvm", so we need to figure out the actual manufacturer from both "$virtWhat" and "$virtType".
 function setDhcpOrStatic() {
 	[[ "$1" == "dhcp" || "$1" == "auto" || "$1" == "automatic" || "$1" == "true" || "$1" == "yes" || "$1" == "1" ]] && {
 		Network4Config="isDHCP"
 		Network6Config="isDHCP"
 	}
-	[[ "$1" == "static" || "$1" == "manual" || "$1" == "none" || "$1" == "false" || "$1" == "no" || "$1" == "0" || -n $(echo $2 | grep -io 'google') ]] && {
+	[[ "$1" == "static" || "$1" == "manual" || "$1" == "none" || "$1" == "false" || "$1" == "no" || "$1" == "0" || -n $(echo $2 $3 | grep -io 'google') ]] && {
 		Network4Config="isStatic"
 		Network6Config="isStatic"
 	}
@@ -3097,6 +3105,11 @@ clear
 	echo -e "\n${TotalMem} MB"
 }
 
+[[ -n "$showAllVirts" ]] && {
+	echo -ne "\n${aoiBlue}# Virtualization and Manufacturer${plain}\n"
+	echo -e "\n${showAllVirts}"
+}
+
 [[ "$lowMemMode" == '1' || "$useCloudImage" == "1" ]] && {
 	detectCloudinit
 	if [[ "$linux_relese" == 'rockylinux' || "$linux_relese" == 'almalinux' || "$linux_relese" == 'centos' ]]; then
@@ -3109,7 +3122,7 @@ clear
 			# Cloud images of Redhat 8 series could not accept any parameter of IPv6 from cloud init, this is an awful release because of higher memory requirement for installation and execution, worse compatibility. Anyone should abandon it in principle.
 			[[ "$IPStackType" != "IPv4Stack" || "$internalCloudinitStatus" == "1" ]] && {
 				if [[ "$IPStackType" != "IPv4Stack" ]]; then
-					echo -ne "\n[${red}Error${plain}] Cloud Image of ${yellow}$targetRelese $RedHatSeries${plain} doesn't support ${blue}$IPStackType${plain}!\n"
+					echo -ne "\n[${red}Error${plain}] Cloud Image of ${yellow}$targetRelese $RedHatSeries${plain} doesn't support ${blue}$IPStackType${plain} network!\n"
 				elif [[ "$internalCloudinitStatus" == "1" ]]; then
 					echo -ne "\n[${red}Error${plain}] Due to internal Cloud Init configurations existed on ${underLine}$cloudinitCdDrive${plain}, installation of $targetRelese $RedHatSeries will meet a fatal!\n"
 				fi
@@ -3178,7 +3191,7 @@ ip6DNS=$(checkDNS "$ip6DNS")
 if [[ -n "$ipAddr" && -n "$ipMask" && -n "$ipGate" ]] && [[ -z "$ip6Addr" && -z "$ip6Mask" && -z "$ip6Gate" ]]; then
 	setNet='1'
 	checkDHCP "$CurrentOS" "$CurrentOSVer" "$IPStackType"
-	setDhcpOrStatic "$tmpDHCP" "$virtWhat"
+	setDhcpOrStatic "$tmpDHCP" "$virtWhat" "$virtType"
 	Network4Config="isStatic"
 	acceptIPv4AndIPv6SubnetValue "$ipMask" ""
 	[[ "$IPStackType" != "IPv4Stack" ]] && getIPv6Address
@@ -3191,7 +3204,7 @@ elif [[ -n "$ipAddr" && -n "$ipMask" && -n "$ipGate" ]] && [[ -n "$ip6Addr" && -
 elif [[ -z "$ipAddr" && -z "$ipMask" && -z "$ipGate" ]] && [[ -n "$ip6Addr" && -n "$ip6Mask" && -n "$ip6Gate" ]]; then
 	setNet='1'
 	checkDHCP "$CurrentOS" "$CurrentOSVer" "$IPStackType"
-	setDhcpOrStatic "$tmpDHCP" "$virtWhat"
+	setDhcpOrStatic "$tmpDHCP" "$virtWhat" "$virtType"
 	Network6Config="isStatic"
 	acceptIPv4AndIPv6SubnetValue "" "$ip6Mask"
 	getIPv4Address
@@ -3199,7 +3212,7 @@ fi
 
 if [[ "$setNet" == "0" ]]; then
 	checkDHCP "$CurrentOS" "$CurrentOSVer" "$IPStackType"
-	setDhcpOrStatic "$tmpDHCP" "$virtWhat"
+	setDhcpOrStatic "$tmpDHCP" "$virtWhat" "$virtType"
 	getIPv4Address
 	[[ "$IPStackType" != "IPv4Stack" ]] && getIPv6Address
 	if [[ "$IPStackType" == "BiStack" && "$iAddrNum" -ge "2" || "$i6AddrNum" -ge "2" ]]; then
@@ -3932,7 +3945,8 @@ echo "LinuxMirror  "${LinuxMirror} >> \$sysroot/root/alpine.config
 # To determine the release of Alpine Linux.
 echo "alpineVer  "${DIST} >> \$sysroot/root/alpine.config
 
-# To determine the release of Redhat series for target system.
+# To determine the distribution and release of Redhat series for target system.
+echo "targetRelese  "${targetRelese} >> \$sysroot/root/alpine.config
 echo "RedHatSeries  "${RedHatSeries} >> \$sysroot/root/alpine.config
 
 # To determine the mirror of software for target system.
@@ -4281,6 +4295,10 @@ find . | cpio -o -H newc | gzip -1 >/tmp/initrd.img
 # Debian/Ubuntu/Kali/AlpineLinux Grub1 setting start
 if [[ ! -z "$GRUBTYPE" && "$GRUBTYPE" == "isGrub1" ]]; then
 	if [[ "$setNetbootXyz" == "0" ]]; then
+		# In templates of Debian of equinix.com, the default "grub.cfg" is not match with the standard format, so it should be re-generated.
+		[[ ! $(grep -iE '/etc/grub.d|begin|end|savedefault|load_video|gfxmode' $GRUBDIR/$GRUBFILE) ]] && {
+			grub-mkconfig -o $GRUBDIR/$GRUBFILE >>/dev/null 2>&1
+		}
 		READGRUB='/tmp/grub.read'
 		[[ -f $READGRUB ]] && rm -rf $READGRUB
 		touch $READGRUB
@@ -4429,7 +4447,17 @@ if [[ ! -z "$GRUBTYPE" && "$GRUBTYPE" == "isGrub1" ]]; then
 		#   initrdfail
 		# }
 		#
-		# The same as AWS Lightsail.
+		# The same as AWS Lightsail, GCP.
+		#
+		# "initrdfail" is a recovery feature of Ubuntu. This option is used as when booting without initrd/initramfs for the cloud,
+		# and is not suitable in a normal Ubuntu installation environment. This option is similar to "recordfail",
+		# the variables of "initrdfail" are set on the GRUB side when each booting and then they will be deleted after startup,
+		# the behavior changes at the next startup depending on the contents of the variables.
+		#
+		# Reference: https://gihyo.jp/admin/serial/01/ubuntu-recipe/0746
+		#     Title: 第746回: update-grubの仕組みを使ってUbuntuのGRUBをさらにカスタマイズする
+		#   Chapter: 起動が失敗した時のリカバリー機能
+		#
 		[[ -n $(grep "initrdfail" /tmp/grub.new) ]] && {
 			sed -ri 's/\"\$\{initrdfail\}\".*/\"\$\{initrdfail\}\" = \"\" ]; then/g' /tmp/grub.new
 			sed -ri 's/initrdfail/initrdfial/g' /tmp/grub.new
