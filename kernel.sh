@@ -228,26 +228,26 @@ function Start() {
   echo -ne "\nYour option: "
   read N
   case $N in
-    1) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -debian 10 -version 64 -a $NETSTR $DMIRROR ;;
-    2) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -debian 11 -version 64 -a $NETSTR $DMIRROR ;;
-    3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -ubuntu 18.04 -version 64 -a $NETSTR $UMIRROR ;;
-    4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -ubuntu 20.04 -version 64 -a $NETSTR $UMIRROR ;;
-    5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -centos 7.9 -version 64 -a $NETSTR $CMIRROR ;;
-    6) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
-    7) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
-    8) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
-    9) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
-    10) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh $NETSTR -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    12) echo -e "\nPassword: Hostrdp123!\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win12.xz' $DMIRROR ;;
-    13) echo -e "\nPassword: Hostrdp123!\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win10pro.xz' $DMIRROR ;;
+    1) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -debian 10 -version 64 -mirror $DMIRROR ;;
+    2) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -debian 11 -version 64 -mirror $DMIRROR ;;
+    3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -ubuntu 18.04 -version 64 -mirror $UMIRROR ;;
+    4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -ubuntu 20.04 -version 64 -mirror $UMIRROR ;;
+    5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -centos 7.9 -version 64 -mirror $CMIRROR ;;
+    6) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
+    7) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
+    8) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
+    9) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
+    10) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
+    12) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win12.xz' $DMIRROR ;;
+    13) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win10pro.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
       echo -e "\n"
       read -r -p "Are you sure start reinstall? [y/N]: " input
       case $input in
-        [yY][eE][sS]|[yY]) bash /tmp/InstallNET.sh $NETSTR -dd $imgURL $DMIRROR ;;
+        [yY][eE][sS]|[yY]) bash /tmp/InstallNET.sh -dd $imgURL $DMIRROR ;;
         *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
