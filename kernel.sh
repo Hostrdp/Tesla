@@ -216,13 +216,14 @@ function Start() {
   echo "  4) Ubuntu 20.04"
   echo "  5) CentOS 7.9"
   echo "  6) Win 10 LTSC Teddysun"
-  echo "  7) Win 11 Pro Teddysun"
-  echo "  8) Windows Server 2012 DC Teddysun"
-  echo "  9) Windows Server 2016 DC Teddysun"
-  echo "  10) Windows Server 2019 DC Teddysun"
-  echo "  11) Windows Server 2022 DC Teddysun"
-  echo "  12) Windows Server 2012 DC Adhwa Digital"
-  echo "  13) Windows 10 Pro Adhwa Digital"
+  echo "  7) Win 10 23H2 Teddysun"
+  echo "  8) Win 11 Pro Teddysun"
+  echo "  9) Win 11 23H2 Teddysun"
+  echo "  10) Windows Server 2012 DC Teddysun"
+  echo "  11) Windows Server 2016 DC Teddysun"
+  echo "  12) Windows Server 2019 DC Teddysun"
+  echo "  13) Windows Server 2022 DC Teddysun"
+  echo "  14) Windows Server 2012 DC Adhwa Digital"
   echo "  99) Custom image"
   echo "  0)Exit"
   echo -ne "\nYour option: "
@@ -234,13 +235,14 @@ function Start() {
     4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -ubuntu 20.04 -version 64 -mirror $UMIRROR ;;
     5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -centos 7.9 -version 64 -mirror $CMIRROR ;;
     6) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_windows10_ltsc.xz' $DMIRROR ;;
-    7) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
-    8) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
-    9) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
-    10) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
-    11) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    12) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win12.xz' $DMIRROR ;;
-    13) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win10pro.xz' $DMIRROR ;;
+    7) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/tiny10_23h2.xz' $DMIRROR ;;
+    8) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_windows11_22h2.xz' $DMIRROR ;;
+    9) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/tiny11_23h2.xz' $DMIRROR ;;
+    10) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2012r2.xz' $DMIRROR ;;
+    11) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
+    12) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
+    13) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
+    14) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win12.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
