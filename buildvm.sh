@@ -23,9 +23,9 @@ system="${12:-ubuntu22}"
 storage="${13:-local}"
 independent_ipv6="${14:-N}"
 independent_ipv6=$(echo "$independent_ipv6" | tr '[:upper:]' '[:lower:]')
-# in="${15:-300}"
-# out="${16:-300}"
-rdp="${17:-40004}"
+rdp="${15:-40004}"
+# in="${16:-300}"
+# out="${17:-300}"
 rm -rf "vm$name"
 
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
@@ -319,11 +319,11 @@ fi
 qm start $vm_num
 
 iptables -t nat -A PREROUTING -p tcp --dport ${sshn} -j DNAT --to-destination ${user_ip}:22
+iptables -t nat -A PREROUTING -p tcp --dport ${rdp} -j DNAT --to-destination ${user_ip}:3389
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${web1_port} -j DNAT --to-destination ${user_ip}:80
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${web2_port} -j DNAT --to-destination ${user_ip}:443
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${port_first}:${port_last} -j DNAT --to-destination ${user_ip}:${port_first}-${port_last}
 iptables -t nat -A PREROUTING -p udp -m udp --dport ${port_first}:${port_last} -j DNAT --to-destination ${user_ip}:${port_first}-${port_last}
-iptables -t nat -A PREROUTING -p tcp --dport ${rdp} -j DNAT --to-destination ${user_ip}:3389
 if [ ! -f "/etc/iptables/rules.v4" ]; then
     touch /etc/iptables/rules.v4
 fi
