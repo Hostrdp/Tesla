@@ -24,3 +24,7 @@ wget --no-check-certificate -qO kernelv2.sh https://raw.githubusercontent.com/Ho
 ```
 mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg && update-grub2
 ```
+# Build NAT VM Proxmox
+```
+wget -qO- https://raw.githubusercontent.com/Hostrdp/Tesla/main/buildvm.sh && chmod +x buildvm.sh
+```
