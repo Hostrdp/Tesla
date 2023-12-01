@@ -18,5 +18,5 @@ mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg && update-grub2
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/setup_nat.sh)
 ```
 ```
-bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/buildvm.sh)
+curl -L https://raw.githubusercontent.com/Hostrdp/Tesla/main/buildvm.sh -o buildvm.sh && chmod +x buildvm.sh
 ```
