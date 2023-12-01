@@ -4,7 +4,7 @@
 # 2023.11.26
 
 # ./buildvm.sh VMID 用户名 密码 CPU核数 内存 硬盘 SSH端口 80端口 443端口 外网端口起 外网端口止 系统 存储盘 独立IPV6
-# ./buildvm.sh 102 test1 1234567 1 512 5 40001 40002 40003 50000 50025 debian11 local N 40004
+# ./buildvm.sh 102 test1 1234567 1 512 5 40001 40002 40003 50000 debian11 local N 
 
 cd /root >/dev/null 2>&1
 # 创建NAT的虚拟机
@@ -17,15 +17,13 @@ disk="${6:-5}"
 sshn="${7:-40001}"
 web1_port="${8:-40002}"
 web2_port="${9:-40003}"
-port_first="${10:-49975}"
-port_last="${11:-50000}"
-system="${12:-ubuntu22}"
-storage="${13:-local}"
-independent_ipv6="${14:-N}"
+rdp_port="${10:-50000}"
+system="${11:-ubuntu22}"
+storage="${12:-local}"
+independent_ipv6="${13:-N}"
 independent_ipv6=$(echo "$independent_ipv6" | tr '[:upper:]' '[:lower:]')
-rdp="${15:-40004}"
-# in="${16:-300}"
-# out="${17:-300}"
+# in="${14:-300}"
+# out="${15:-300}"
 rm -rf "vm$name"
 
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
@@ -275,11 +273,11 @@ qm set $vm_num --boot order=scsi0
 qm set $vm_num --memory $memory
 # --swap 256
 qm set $vm_num --ide2 ${storage}:cloudinit
-user_ip="172.16.1.${num}"
+user_ip="192.168.200.${num}"
 if [ "$independent_ipv6" == "y" ]; then
     if [ ! -z "$ipv6_address" ] && [ ! -z "$ipv6_prefixlen" ] && [ ! -z "$ipv6_gateway" ] && [ ! -z "$ipv6_address_without_last_segment" ]; then
         if grep -q "vmbr2" /etc/network/interfaces; then
-            qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=172.16.1.1
+            qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=192.168.200.1
             qm set $vm_num --ipconfig1 ip6="${ipv6_address_without_last_segment}${vm_num}/128",gw6="${host_ipv6_address}"
             qm set $vm_num --nameserver 1.1.1.1
             # qm set $vm_num --nameserver 1.0.0.1
@@ -296,12 +294,12 @@ else
 fi
 if [ "$independent_ipv6_status" == "N" ]; then
     # if [ -z "$ipv6_address" ] || [ -z "$ipv6_prefixlen" ] || [ -z "$ipv6_gateway" ] || [ "$ipv6_prefixlen" -gt 112 ]; then
-        qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=172.16.1.1
+        qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=192.168.200.1
         qm set $vm_num --nameserver 8.8.8.8
         # qm set $vm_num --nameserver 8.8.4.4
         qm set $vm_num --searchdomain local
     # else
-        # qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=172.16.1.1,ip6=${ipv6_address}/${ipv6_prefixlen},gw6=${ipv6_gateway}
+        # qm set $vm_num --ipconfig0 ip=${user_ip}/24,gw=192.168.200.1,ip6=${ipv6_address}/${ipv6_prefixlen},gw6=${ipv6_gateway}
         # qm set $vm_num --nameserver 8.8.8.8,2001:4860:4860::8888
         # qm set $vm_num --searchdomain 8.8.4.4,2001:4860:4860::8844
     # fi
@@ -319,11 +317,9 @@ fi
 qm start $vm_num
 
 iptables -t nat -A PREROUTING -p tcp --dport ${sshn} -j DNAT --to-destination ${user_ip}:22
-iptables -t nat -A PREROUTING -p tcp --dport ${rdp} -j DNAT --to-destination ${user_ip}:3389
+iptables -t nat -A PREROUTING -p tcp --dport ${rdp_port} -j DNAT --to-destination ${user_ip}:3389
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${web1_port} -j DNAT --to-destination ${user_ip}:80
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${web2_port} -j DNAT --to-destination ${user_ip}:443
-iptables -t nat -A PREROUTING -p tcp -m tcp --dport ${port_first}:${port_last} -j DNAT --to-destination ${user_ip}:${port_first}-${port_last}
-iptables -t nat -A PREROUTING -p udp -m udp --dport ${port_first}:${port_last} -j DNAT --to-destination ${user_ip}:${port_first}-${port_last}
 if [ ! -f "/etc/iptables/rules.v4" ]; then
     touch /etc/iptables/rules.v4
 fi
@@ -334,10 +330,10 @@ service netfilter-persistent restart
 # 虚拟机的相关信息将会存储到对应的虚拟机的NOTE中，可在WEB端查看
 if [ "$independent_ipv6_status" == "Y" ]; then
     echo "$vm_num $user $password $core $memory $disk $sshn $web1_port $web2_port $rdp $port_first $port_last $system $storage ${ipv6_address_without_last_segment}${vm_num}" >>"vm${vm_num}"
-    data=$(echo " VMID 用户名-username 密码-password CPU核数-CPU 内存-memory 硬盘-disk SSH端口 80端口 443端口 3389端口 外网端口起-port-start 外网端口止-port-end 系统-system 存储盘-storage 独立IPV6地址-ipv6_address")
+    data=$(echo " VMID 用户名-username 密码-password CPU核数-CPU 内存-memory 硬盘-disk SSH端口 80端口 443端口 3389端口 系统-system 存储盘-storage 独立IPV6地址-ipv6_address")
 else
     echo "$vm_num $user $password $core $memory $disk $sshn $web1_port $web2_port $rdp $port_first $port_last $system $storage" >>"vm${vm_num}"
-    data=$(echo " VMID 用户名-username 密码-password CPU核数-CPU 内存-memory 硬盘-disk SSH端口 80端口 443端口 3389端口 外网端口起-port-start 外网端口止-port-end 系统-system 存储盘-storage")
+    data=$(echo " VMID 用户名-username 密码-password CPU核数-CPU 内存-memory 硬盘-disk SSH端口 80端口 443端口 3389端口 系统-system 存储盘-storage")
 fi
 values=$(cat "vm${vm_num}")
 IFS=' ' read -ra data_array <<<"$data"
