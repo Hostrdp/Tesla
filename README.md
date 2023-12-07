@@ -13,6 +13,14 @@ bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrd
 ```
 mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg && update-grub2
 ```
+
+# PVE Setup
+```
+bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/installpve1.sh)
+```
+```
+bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/installpve2.sh)
+```
 # Setup and Build NAT VM Proxmox
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/setup_nat.sh)
