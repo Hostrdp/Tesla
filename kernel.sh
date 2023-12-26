@@ -242,7 +242,7 @@ function Start() {
     11) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2016.xz' $DMIRROR ;;
     12) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en_win2019.xz' $DMIRROR ;;
     13) bash /tmp/InstallNET.sh -dd 'https://dl.lamp.sh/vhd/en-us_win2022.xz' $DMIRROR ;;
-    14) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'https://cdn.akumavm.com/win12.xz' $DMIRROR ;;
+    14) echo -e "\nPassword: Hostrdp123!\n"; bash /tmp/InstallNET.sh -dd 'http://144.76.169.192:30099/win12pve.xz' $DMIRROR ;;
     99)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
