@@ -21,6 +21,10 @@ bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrd
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/installpve2.sh)
 ```
+# Fail2Ban Setup
+```
+bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/secure.sh)
+```
 # Setup and Build NAT VM Proxmox
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/setup_nat.sh)
