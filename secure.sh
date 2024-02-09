@@ -3,8 +3,8 @@
 # Exit on any error
 set -e
 
-# Update package list
-apt update
+# Update and upgrade package list
+apt update && apt upgrade -y
 
 # Install fail2ban
 apt install -y fail2ban
