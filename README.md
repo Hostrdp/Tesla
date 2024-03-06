@@ -16,7 +16,7 @@ mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg && update-grub2
 
 # PVE Setup
 ```
-bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/bbr.sh) -y
+wget -qO --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/bbr.sh && chmod +x bbr.sh && bash bbr.sh
 ```
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/installpve1.sh)
