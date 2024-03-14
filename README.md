@@ -24,6 +24,10 @@ bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrd
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/installpve2.sh)
 ```
+```
+wget https://raw.githubusercontent.com/Hostrdp/xshok-proxmox/master/install-post.sh -c -O install-post.sh && chmod +x install-post.sh
+./install-post.sh && rm install-post.sh
+```
 # Fail2Ban Setup
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/Hostrdp/Tesla/main/secure.sh)
