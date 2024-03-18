@@ -3,8 +3,7 @@
 apt update && apt upgrade -y
 
 echo "Install and Setup pre-run script"
-apt install -y wget curl nano screen ftp linux-cpupower chrony
-systemctl enable chrony
+apt install -y wget curl nano screen ftp linux-cpupower
 
 echo "Configures CPU freqs"
 cpupower frequency-set --governor performance
