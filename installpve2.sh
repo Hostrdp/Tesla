@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Installing PVE and dependecies"
-apt install proxmox-ve postfix open-iscsi -y
+apt install proxmox-ve postfix open-iscsi chrony -y
 apt remove linux-image-amd64 'linux-image-5.10*' -y
 update-grub
 apt remove os-prober -y
