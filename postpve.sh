@@ -931,6 +931,7 @@ echo "# eXtremeSHOK.com" > /etc/extremeshok
 date >> /etc/extremeshok
 
 ## Script Finish
-echo -e '\033[1;33m Finished....please restart the system \033[0m'
+echo -e '\033[1;33m Finished....rebooting the system now \033[0m'
 echo "Optimisations by AKUMA VM"
 echo "Supported by extremeSHOK"
+systemctl reboot
