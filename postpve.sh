@@ -70,7 +70,7 @@ if [ -z "$XS_ENTROPY" ] ; then
 fi
 # Protect the web interface with fail2ban
 if [ -z "$XS_FAIL2BAN" ] ; then
-    XS_FAIL2BAN="yes"
+    XS_FAIL2BAN="no"
 fi
 # Detect if is a virtual machine and install the relavant guest agent
 if [ -z "$XS_GUESTAGENT" ] ; then
@@ -82,7 +82,7 @@ if [ -z "$XS_IFUPDOWN2" ] ; then
 fi
 # Limit the size and optimise journald
 if [ -z "$XS_JOURNALD" ] ; then
-    XS_JOURNALD="yes"
+    XS_JOURNALD="no"
 fi
 # Install kernel source headers
 if [ -z "$XS_KERNELHEADERS" ] ; then
@@ -170,7 +170,7 @@ if [ -z "$XS_TESTREPO" ] ; then
 fi
 # Automatically Synchronize the time
 if [ -z "$XS_TIMESYNC" ] ; then
-    XS_TIMESYNC="yes"
+    XS_TIMESYNC="no"
 fi
 # Set Timezone, empty = set automatically by IP
 if [ -z "$XS_TIMEZONE" ] ; then
