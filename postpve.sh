@@ -90,7 +90,7 @@ if [ -z "$XS_KERNELHEADERS" ] ; then
 fi
 # Ensure ksmtuned (ksm-control-daemon) is enabled and optimise according to ram size
 if [ -z "$XS_KSMTUNED" ] ; then
-    XS_KSMTUNED="yes"
+    XS_KSMTUNED="no"
 fi
 # Set language, if changed will disable XS_NOAPTLANG
 if [ -z "$XS_LANG" ] ; then
